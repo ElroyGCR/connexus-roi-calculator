@@ -1,112 +1,268 @@
 
 import streamlit as st
-import matplotlib.pyplot as plt
-import plotly.graph_objects as go
 from PIL import Image
+import pandas as pd
+import plotly.graph_objects as go
 
-st.set_page_config(page_title="ConnexUS ROI Calculator", layout="wide")
-left, right = st.columns([1, 2])
+# Load logo
+logo = Image.open("connexus_logo.png")
 
-with left:
-    logo = Image.open("connexus_logo.png")
-    st.image(logo, width=200)
-    st.header("ROI Inputs")
-    mode = st.radio("Choose Input Method:", ["📞 Monthly Call Volume (Interactions)", "👥 Agent-Based (FTE x Hours)"])
+# App config
+st.set_page_config(
+    page_title="ConnexUS AI ROI Calculator",
+    layout="wide"
+)
 
-    if mode == "📞 Monthly Call Volume (Interactions)":
-        call_volume = st.number_input("Monthly Call Volume (Interactions)", min_value=0, value=5000, step=100)
-        aht = st.number_input("Average Handle Time (minutes)", min_value=1.0, value=6.0, step=0.5)
-        total_minutes = call_volume * aht
-    else:
-        agent_count = st.number_input("Number of Agents (FTE)", min_value=1, value=10)
-        hours_per_agent = st.number_input("Monthly Hours per Agent", min_value=1, value=160)
-        total_minutes = agent_count * hours_per_agent * 60
+# --- SIDEBAR ---
+st.sidebar.image(logo, use_container_width=True)
+st.sidebar.header("📊 Input Your Call Center Data")
 
-    hourly_cost = st.number_input("Human Agent Hourly Cost ($)", min_value=1.0, value=25.0)
-    automation_pct = st.slider("AI Automation %", min_value=0, max_value=100, value=70, step=5)
-    ai_per_min = st.number_input("AI Cost per Minute ($)", min_value=0.01, value=0.18)
-    ai_monthly_fee = st.number_input("AI Platform Monthly Fee ($)", min_value=0.0, value=2000.0)
-    integration_cost = st.number_input("One-Time Integration Fee ($)", min_value=0.0, value=15000.0)
+# Revenue & Volume
+st.sidebar.subheader("📈 Revenue & Volume")
+monthly_revenue = st.sidebar.number_input("Monthly Revenue ($)", value=250000, step=10000)
+weekly_interactions = st.sidebar.number_input("Weekly Interactions", value=10000, step=100)
+aht = st.sidebar.slider("Average Handle Time (minutes)", 1, 20, 6)
 
-# --- Calculations ---
-human_monthly = (total_minutes / 60) * hourly_cost
-ai_minutes = total_minutes * (automation_pct / 100)
-residual_minutes = total_minutes - ai_minutes
-ai_usage_cost = ai_minutes * ai_per_min
-residual_human_cost = (residual_minutes / 60) * hourly_cost
-ai_total_cost = ai_monthly_fee + ai_usage_cost + residual_human_cost
-savings = human_monthly - ai_total_cost
-roi = (savings / ai_total_cost * 100) if ai_total_cost > 0 else 0
+# Workforce & Agent Metrics
+st.sidebar.subheader("👥 Workforce & Agent Metrics")
+agents = st.sidebar.slider("Agents (FTE)", 1, 100, 25)
+hourly_cost = st.sidebar.slider("Agent Hourly Cost ($)", 10.0, 60.0, 15.0)
+attrition = st.sidebar.slider("Monthly Attrition Rate (%)", 0, 50, 10)
+no_show = st.sidebar.slider("No‑Call/No‑Show Rate (%)", 0, 20, 5)
+pto_days = st.sidebar.slider("PTO/Sick‑Leave Days/Year", 0, 30, 5)
+hours_per_week = st.sidebar.slider("Weekly Hours per Agent", 35, 45, 40)
+shift_hours = st.sidebar.number_input("Shift Length (hours)", value=8.5, step=0.5)
+new_hire_cost = st.sidebar.number_input("Cost per New Hire ($)", value=2000, step=500)
+multilingual_premium = st.sidebar.slider("Multilingual Premium (%)", 0, 15, 5)
+peak_staffing = st.sidebar.slider("Peak Volume Staffing Increase (%)", 0, 50, 10)
+peak_frequency = st.sidebar.slider("Peak Volume Occurrence (per year)", 0, 12, 3)
+support_staff_pct = st.sidebar.slider("Support Staff Overhead (%)", 0, 30, 20)
 
-with right:
-    st.title("📊 ConnexUS ROI Results")
+st.sidebar.subheader("💼 Business Impact Assumptions")
+production_percent = st.sidebar.number_input("Production Improvement (%)", value=25.0, step=0.1)
+upsell_percent = st.sidebar.number_input("Upsell Improvement (%)", value=10.0, step=0.1)
 
-    # 1. Summary table first
-    st.subheader("📄 Scenario Summary")
-    st.table({
-        "Scenario": ["Human", "AI-Enabled"],
-        "Monthly Cost ($)": [f"{human_monthly:,.2f}", f"{ai_total_cost:,.2f}"],
-        "Annual Cost ($)": [f"{human_monthly*12:,.2f}", f"{ai_total_cost*12:,.2f}"],
-        "ROI %": ["-", f"{roi:.1f}%"],
-        "Savings ($/mo)": ["-", f"{savings:,.2f}"],
-        "Break-even (months)": ["-", f"{(integration_cost / savings):.1f}" if savings > 0 else "N/A"]
-    })
+# AI Cost Inputs
+st.sidebar.markdown("---")
+st.sidebar.subheader("🤖 AI Cost Inputs")
+automation = st.sidebar.slider("AI Automation % Target", 0, 100, 50)
+subscription = st.sidebar.number_input("AI Monthly Subscription ($)", value=2000, step=100)
+integration = st.sidebar.number_input("One-time Integration Fee ($)", value=15000, step=1000)
+ai_cost_per_min = st.sidebar.number_input("AI Cost per Minute ($)", value=0.18, step=0.01)
 
-    # 2. ROI Gauge
-    st.subheader("🎯 ROI Gauge")
-    fig_gauge = go.Figure(go.Indicator(
-        mode="gauge+number+delta",
-        value=roi,
-        title={'text': "ROI (%)"},
-        gauge={
-            'axis': {'range': [None, 200]},
-            'steps': [
-                {'range': [0, 50], 'color': "lightgray"},
-                {'range': [50, 100], 'color': "lightblue"},
-                {'range': [100, 200], 'color': "lightgreen"}
-            ],
-            'threshold': {'line': {'color': "red", 'width': 4}, 'value': roi}
-        }
-    ))
-    st.plotly_chart(fig_gauge)
+# --- MAIN ---
+st.markdown("# ConnexUS AI ROI Calculator")
+st.markdown("### Powered by ConnexUS")
+st.markdown("---")
+ 
+# --- TOTAL VALUE + ROI / PAYBACK CALCULATIONS ---
 
-    # 3. Waterfall
-    st.subheader("📉 AI Cost Composition (Waterfall)")
-    fig_waterfall = go.Figure(go.Waterfall(
-        name="Cost Breakdown", orientation="v",
-        measure=["absolute", "relative", "relative", "relative"],
-        x=["Human Cost", "AI Platform", "AI Usage", "Residual Labor"],
-        y=[human_monthly, -savings, ai_usage_cost, residual_human_cost],
-        connector={"line": {"color": "gray"}}
-    ))
-    fig_waterfall.update_layout(title="Waterfall: Human → AI", showlegend=False)
-    st.plotly_chart(fig_waterfall)
+# 1. Monthly workload in minutes
+monthly_minutes = weekly_interactions * aht * 4.33
 
-    # 4. Monthly Cost Breakdown
-    st.subheader("📊 Monthly Cost Breakdown")
-    fig, ax = plt.subplots()
-    labels = ['Human Agent', 'AI-Enabled']
-    human_bar = [human_monthly, 0]
-    ai_bars = [0, ai_monthly_fee]
-    ai_usage = [0, ai_usage_cost]
-    ai_residual = [0, residual_human_cost]
+# 2. AI automation vs residual
+ai_minutes = (automation / 100) * monthly_minutes
+residual_minutes = monthly_minutes - ai_minutes
 
-    ax.bar(labels, human_bar, label='Human Labor')
-    ax.bar(labels, ai_bars, bottom=human_bar, label='AI Platform Fee')
-    ax.bar(labels, ai_usage, bottom=[sum(x) for x in zip(human_bar, ai_bars)], label='AI Usage')
-    ax.bar(labels, ai_residual, bottom=[sum(x) for x in zip(human_bar, ai_bars, ai_usage)], label='Residual Human')
-    ax.set_ylabel('Monthly Cost ($)')
-    ax.legend()
-    st.pyplot(fig)
+ai_cost = ai_minutes * ai_cost_per_min
+residual_cost = (residual_minutes / 60) * hourly_cost
+ai_enabled_cost = ai_cost + residual_cost + subscription
+total_ai_monthly_cost = ai_cost + subscription
 
-    # 5. Net savings over time
-    st.subheader("📈 Cumulative Net Savings (12 months)")
-    months = list(range(1, 13))
-    cumulative = [savings * m for m in months]
-    fig_line, ax_line = plt.subplots()
-    ax_line.plot(months, cumulative, marker='o')
-    ax_line.axhline(integration_cost, linestyle='--', color='red', label='Integration Cost')
-    ax_line.set_xlabel("Month")
-    ax_line.set_ylabel("Cumulative Savings ($)")
-    ax_line.legend()
-    st.pyplot(fig_line)
+# 3. Indirect value
+production_multiplier = production_percent / 100
+upsell_multiplier = upsell_percent / 100
+
+production_savings = monthly_minutes * production_multiplier
+upsell_savings = monthly_minutes * upsell_multiplier
+indirect_savings = production_savings + upsell_savings
+
+# 4. Baseline human cost (dynamically calculated)
+agent_monthly_hours = hours_per_week * 4.33
+minutes_per_agent = agent_monthly_hours * 60
+required_agents = monthly_minutes / minutes_per_agent
+effective_agents = max(agents, required_agents)
+base_labor_cost = effective_agents * agent_monthly_hours * hourly_cost
+support_staff_cost = base_labor_cost * (support_staff_pct / 100)
+baseline_human_cost = (base_labor_cost + support_staff_cost) * 1.222431
+
+# 5. Net savings (Direct only)
+net_savings = baseline_human_cost - ai_enabled_cost
+
+# 6. Toggle: Use indirect savings in ROI logic?
+use_indirects = st.sidebar.checkbox("Include Indirect Value in ROI Calculation", value=True)
+value_basis = net_savings + indirect_savings if use_indirects else net_savings
+
+# 7. ROI & Payback
+roi_percent = (value_basis / ai_enabled_cost) * 100 if ai_enabled_cost > 0 else 0
+annual_roi_percent = roi_percent * 12
+payback_days = (integration / value_basis) * 30 if value_basis > 0 else 999
+
+# 8. Additional metrics
+monthly_cost_reduction = (net_savings / baseline_human_cost) * 100 if baseline_human_cost > 0 else 0
+dollar_saved_per_ai_dollar = (value_basis / total_ai_monthly_cost) if total_ai_monthly_cost > 0 else 0
+total_monthly_value = net_savings + indirect_savings
+annual_net_savings = total_monthly_value * 12
+
+# --- KPI CARDS ---
+col1, col2, col3, col4 = st.columns(4)
+col1.metric("💰 Net Monthly Savings", f"${net_savings:,.0f}")
+col2.metric("📅 Payback Time", f"{payback_days:.1f} days")
+col3.metric("📈 ROI (Monthly %)", f"{roi_percent:.1f}%")
+col4.metric("📈 ROI (Annual %)", f"{annual_roi_percent:.1f}%")
+
+# --- INDIRECT VALUE KPI DISPLAY ---
+st.markdown("### 🌟 Total Value & Indirect Impact")
+
+col1, col2, col3 = st.columns(3)
+col1.metric("🧠 Production Gains", f"${production_savings:,.0f}")
+col2.metric("📈 Upsell Gains", f"${upsell_savings:,.0f}")
+col3.metric("🎯 Total Monthly Value", f"${total_monthly_value:,.0f}")
+
+# --- AI Investment Visual ---
+st.markdown("### 💡 AI Investment Impact")
+st.markdown(
+    f"<div style='font-size: 22px;'><strong>For every</strong> <span style='color:#FFD700;'>$1</span> <strong>you spend on AI, you save</strong>: "
+    f"<span style='color:#00FFAA; font-size: 28px;'>${dollar_saved_per_ai_dollar:,.2f}</span></div>",
+    unsafe_allow_html=True
+)
+# --- ROI & Payback Gauges ---
+st.markdown("## 🎯 ROI & Break-even Overview")
+col1, col2 = st.columns(2)
+
+gauge_fig = go.Figure(go.Indicator(
+    mode="gauge+number+delta",
+    value=roi_percent,
+    delta={'reference': 100, 'increasing': {'color': "green"}, 'decreasing': {'color': "red"}},
+    gauge={
+        'axis': {'range': [0, 200]},
+        'bar': {'color': "darkblue"},
+        'steps': [
+            {'range': [0, 50], 'color': 'lightgray'},
+            {'range': [50, 100], 'color': 'lightblue'},
+            {'range': [100, 200], 'color': 'lightgreen'}
+        ],
+        'threshold': {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': 50}
+    },
+    title={'text': "ROI (%)"}
+))
+
+payback_gauge = go.Figure(go.Indicator(
+    mode="gauge+number",
+    value=payback_days,
+    title={'text': "Payback Time (Days)"},
+    gauge={
+        'axis': {'range': [0, 30]},
+        'bar': {'color': "black"},
+        'steps': [
+            {'range': [0, 7], 'color': "lightgreen"},
+            {'range': [7, 14], 'color': "yellow"},
+            {'range': [14, 30], 'color': "tomato"}
+        ],
+        'threshold': {'line': {'color': "red", 'width': 4}, 'value': 15}
+    }
+))
+
+with col1:
+    st.plotly_chart(gauge_fig, use_container_width=True)
+with col2:
+    st.plotly_chart(payback_gauge, use_container_width=True)
+
+# --- WATERFALL ---
+st.markdown("## 💧 Monthly Cost Breakdown (Waterfall)")
+
+waterfall_fig = go.Figure(go.Waterfall(
+    name="Monthly Cost",
+    orientation="v",
+    measure=[
+        "absolute",  # 100% Human
+        "relative",  # - Labor removed
+        "relative",  # - Support overhead
+        "relative",  # + AI Usage
+        "relative",  # + Subscription
+        "absolute"   # AI-enabled Net Cost
+    ],
+    x=[
+        "100% Human Cost",
+        "Reduced Labor",
+        "Reduced Overhead",
+        "Add: AI Usage",
+        "Add: Subscription",
+        "Net AI-Enabled Cost"
+    ],
+    y=[
+        baseline_human_cost,
+        -residual_cost,
+        -support_staff_cost,
+        ai_cost,
+        subscription,
+        ai_enabled_cost
+    ],
+    connector={"line": {"color": "rgb(63, 63, 63)"}}
+))
+
+waterfall_fig.update_layout(
+    waterfallgap=0.5,
+    height=400,
+    showlegend=False,
+    yaxis_title="Monthly Cost ($)",
+    plot_bgcolor="rgba(0,0,0,0)"
+)
+
+st.plotly_chart(waterfall_fig, use_container_width=True)
+
+# --- LINE CHART ---
+st.markdown("## 📈 Savings vs Integration Cost Over Time")
+months = list(range(1, 13))
+cumulative_savings = [net_savings * m for m in months]
+integration_cost_line = [integration for _ in months]
+df = pd.DataFrame({
+    "Month": months,
+    "Cumulative Savings": cumulative_savings,
+    "Integration Cost": integration_cost_line
+})
+
+line_fig = go.Figure()
+line_fig.add_trace(go.Scatter(
+    x=df["Month"], y=df["Cumulative Savings"],
+    mode='lines+markers', name="Cumulative Savings",
+    line=dict(color="green", width=3)
+))
+line_fig.add_trace(go.Scatter(
+    x=df["Month"], y=df["Integration Cost"],
+    mode='lines', name="Integration Cost",
+    line=dict(color="red", dash="dash")
+))
+line_fig.update_layout(
+    xaxis_title="Month",
+    yaxis_title="Cumulative ($)",
+    height=400,
+    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+    plot_bgcolor="rgba(0,0,0,0)"
+)
+st.plotly_chart(line_fig, use_container_width=True)
+
+# --- DONUT CHART ---
+st.markdown("## 🍩 AI Cost Composition (Donut Chart)")
+donut_fig = go.Figure(data=[go.Pie(
+    labels=["AI Usage", "Residual Labor", "Subscription"],
+    values=[ai_cost, residual_cost, subscription],
+    hole=.5,
+    textinfo="label+percent+value",
+    marker=dict(colors=["#1f77b4", "#ff7f0e", "#2ca02c"])
+)])
+donut_fig.update_layout(
+    height=400,
+    showlegend=True,
+    title="AI-Enabled Monthly Cost Breakdown",
+    plot_bgcolor="rgba(0,0,0,0)"
+)
+st.plotly_chart(donut_fig, use_container_width=True)
+
+# --- Monthly Cost Reduction ---
+monthly_cost_reduction = (net_savings / baseline_human_cost) * 100 if baseline_human_cost > 0 else 0
+
+st.markdown("## 📉 Monthly Cost Reduction")
+st.caption("Savings vs. Old Cost")
+
+st.markdown(f"<h2 style='color:#00FFAA; font-size: 36px;'>{monthly_cost_reduction:.2f}%</h2>", unsafe_allow_html=True)
