@@ -89,23 +89,6 @@ st.sidebar.markdown("---")
 # 6. ROI Calculation Toggles
 use_indirects = st.sidebar.checkbox("Include Indirect Value in ROI Calculation", value=True)
 use_hr_impact = st.sidebar.checkbox("Include Strategic HR Savings in ROI", value=False)
-
-if use_hr_impact:
-    with st.sidebar.expander("Adjust HR Impact Assumptions"):
-        attrition = st.slider("Monthly Attrition Rate (%)", 0, 50, 10)
-        no_show = st.slider("No‑Call/No‑Show Rate (%)", 0, 20, 5)
-        pto_days = st.slider("PTO/Sick‑Leave Days/Year", 0, 30, 5)
-        new_hire_cost = st.number_input("Cost per New Hire ($)", value=2000, step=500)
-        peak_staffing = st.slider("Peak Volume Staffing Increase (%)", 0, 50, 10)
-        peak_frequency = st.slider("Peak Volume Occurrence (per year)", 0, 12, 3)
-else:
-    # Assign safe defaults so ROI math still works
-    attrition = 0
-    no_show = 0
-    pto_days = 0
-    new_hire_cost = 0
-    peak_staffing = 0
-    peak_frequency = 0
  
 # B. Absenteeism Cost
 absence_rate = (no_show / 100) + (pto_days / 260)  # 260 workdays/year
