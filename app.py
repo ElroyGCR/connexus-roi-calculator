@@ -107,11 +107,6 @@ else:
     peak_staffing = 0
     peak_frequency = 0
  
-# --- Step 2: Strategic Value Calculations ---
-# A. Avoided Recruiting Cost
-total_annual_attrition = attrition / 100 * effective_agents * 12
-recruiting_savings = total_annual_attrition * new_hire_cost
-
 # B. Absenteeism Cost
 absence_rate = (no_show / 100) + (pto_days / 260)  # 260 workdays/year
 absentee_cost = absence_rate * base_labor_cost
@@ -524,13 +519,18 @@ else:
     hr_peak_staffing = 0
     hr_peak_frequency = 0
 
-# --- Strategic Value Calculations ---
-total_annual_attrition = hr_attrition / 100 * effective_agents * 12
-absence_rate = (hr_no_show / 100) + (hr_pto_days / 260)
-recruiting_savings = total_annual_attrition * hr_new_hire_cost
-seasonal_hours = (hr_peak_staffing / 100) * required_agents * shift_hours * hr_peak_frequency
-seasonal_savings = seasonal_hours * hourly_cost * fully_loaded_multiplier
-strategic_total = recruiting_savings + absentee_cost + seasonal_savings
+# --- Strategic Value Calculations (Updated to Use Sidebar Inputs) ---
+if use_hr_impact:
+    total_annual_attrition = top_attrition / 100 * effective_agents * 12
+    absence_rate = (top_noshow / 100) + (top_pto / 260)
+    recruiting_savings = total_annual_attrition * top_hire_cost
+    seasonal_hours = (top_peak_staffing / 100) * required_agents * shift_hours * top_peak_freq
+    seasonal_savings = seasonal_hours * hourly_cost * fully_loaded_multiplier
+    absentee_cost = absence_rate * base_labor_cost  # Don't forget this!
+    strategic_total = recruiting_savings + absentee_cost + seasonal_savings
+    value_basis += strategic_total
+else:
+    strategic_total = 0
 
 # --- Display 3 Metrics in Boxes ---
 col1, col2, col3 = st.columns(3)
