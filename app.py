@@ -521,12 +521,12 @@ else:
 
 # --- Strategic Value Calculations (Updated to Use Sidebar Inputs) ---
 if use_hr_impact:
-    total_annual_attrition = top_attrition / 100 * effective_agents * 12
-    absence_rate = (top_noshow / 100) + (top_pto / 260)
-    recruiting_savings = total_annual_attrition * top_hire_cost
-    seasonal_hours = (top_peak_staffing / 100) * required_agents * shift_hours * top_peak_freq
-    seasonal_savings = seasonal_hours * hourly_cost * fully_loaded_multiplier
-    absentee_cost = absence_rate * base_labor_cost  # Don't forget this!
+    total_annual_attrition = hr_attrition / 100 * effective_agents * 12
+    absence_rate = (hr_no_show / 100) + (hr_pto_days / 260)
+    recruiting_savings = total_annual_attrition * hr_new_hire_cost
+    seasonal_hours = (hr_peak_staffing / 100) * required_agents * shift_hours * hr_peak_frequency
+    seasonal_savings = seasonal_hours * hourly_cost * fully_loaded_multiplier  # ✅ Add this line
+    absentee_cost = absence_rate * base_labor_cost
     strategic_total = recruiting_savings + absentee_cost + seasonal_savings
     value_basis += strategic_total
 else:
@@ -545,7 +545,7 @@ with col1:
         padding: 15px;
         width: fit-content;
     '>
-        <span style='color:#1f77b4; font-size: 32px; font-weight: bold;'>${recruiting_savings:,.0f}</span>
+        <span style='color:#1f77b4; font-size: 32px; font-weight: bold;'>${strategic_total:,.0f}</span>
     </div>
     """, unsafe_allow_html=True)
 
