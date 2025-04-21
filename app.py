@@ -449,9 +449,9 @@ st.markdown(
 
 # --- HR Strategic Impact Composition Donut ---
 st.markdown("## 📊 Breakdown of HR & Seasonal Efficiency Gains")
-go.Pie(
-    labels=[...],
-    values=[...],
+hr_donut = go.Figure(data=[go.Pie(
+    labels=["Recruiting Savings", "Absenteeism Savings", "Seasonal Staffing Savings"],
+    values=[recruiting_savings, absentee_cost, seasonal_savings],
     hole=0.5,
     textinfo="label+percent+value",
     textfont=dict(size=18),  # 🔠 Larger value text inside slices
