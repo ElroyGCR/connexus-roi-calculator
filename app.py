@@ -84,10 +84,33 @@ net_savings = baseline_human_cost - ai_enabled_cost
 # --- Define early strategic_total to avoid NameError ---
 strategic_total = 0  # Temporary placeholder in case HR impact is not calculated yet
 
+st.sidebar.markdown("---")
+
 # 6. ROI Calculation Toggles
 use_indirects = st.sidebar.checkbox("Include Indirect Value in ROI Calculation", value=True)
 use_hr_impact = st.sidebar.checkbox("Include Strategic HR Savings in ROI", value=False)
 
+# --- ROI Toggles ---
+use_indirects = st.sidebar.checkbox("Include Indirect Value in ROI Calculation", value=True)
+use_hr_impact = st.sidebar.checkbox("Include Strategic HR Savings in ROI", value=False)
+
+if use_hr_impact:
+    with st.sidebar.expander("Adjust HR Impact Assumptions"):
+        attrition = st.slider("Monthly Attrition Rate (%)", 0, 50, 10)
+        no_show = st.slider("No‑Call/No‑Show Rate (%)", 0, 20, 5)
+        pto_days = st.slider("PTO/Sick‑Leave Days/Year", 0, 30, 5)
+        new_hire_cost = st.number_input("Cost per New Hire ($)", value=2000, step=500)
+        peak_staffing = st.slider("Peak Volume Staffing Increase (%)", 0, 50, 10)
+        peak_frequency = st.slider("Peak Volume Occurrence (per year)", 0, 12, 3)
+else:
+    # Assign safe defaults so ROI math still works
+    attrition = 0
+    no_show = 0
+    pto_days = 0
+    new_hire_cost = 0
+    peak_staffing = 0
+    peak_frequency = 0
+    
 # Apply selected components to ROI basis
 value_basis = net_savings
 if use_indirects:
@@ -426,17 +449,20 @@ st.markdown(
 
 # --- HR Strategic Impact Composition Donut ---
 st.markdown("## 📊 Breakdown of HR & Seasonal Efficiency Gains")
-hr_donut = go.Figure(data=[go.Pie(
-    labels=["Recruiting Savings", "Absenteeism Savings", "Seasonal Staffing Savings"],
-    values=[recruiting_savings, absentee_cost, seasonal_savings],
+go.Pie(
+    labels=[...],
+    values=[...],
     hole=0.5,
     textinfo="label+percent+value",
+    textfont=dict(size=18),  # 🔠 Larger value text inside slices
     marker=dict(colors=["#e377c2", "#bcbd22", "#17becf"])
 )])
 hr_donut.update_layout(
     height=500,
     showlegend=True,
     title="Strategic Operational Impact Composition",
-    plot_bgcolor="rgba(0,0,0,0)"
+    plot_bgcolor="rgba(0,0,0,0)",
+    font=dict(size=16),  # 🔍 Boosts label font size
+    legend=dict(font=dict(size=14))  # 📘 Improves legend readability
 )
 st.plotly_chart(hr_donut, use_container_width=True)
