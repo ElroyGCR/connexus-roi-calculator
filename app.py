@@ -268,6 +268,10 @@ with col1:
 with col2:
     st.plotly_chart(payback_gauge, use_container_width=True)
 
+# Investment-based ROI & Payback (Important: Define these before rendering)
+investment_roi = ((annual_net_savings - integration) / integration) * 100 if integration > 0 else 0
+investment_payback_months = (integration / annual_net_savings) * 12 if annual_net_savings > 0 else 999
+
 # --- INVESTMENT-BASED ROI & PAYBACK ---
 st.markdown("## 💼 ROI & Break-even Based on Investment")
 st.markdown(
