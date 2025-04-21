@@ -29,7 +29,6 @@ agents = st.sidebar.slider("Agents (FTE)", 1, 100, 25)
 hourly_cost = st.sidebar.slider("Agent Hourly Cost ($)", 10.0, 60.0, 15.0)
 hours_per_week = st.sidebar.slider("Weekly Hours per Agent", 35, 45, 40)
 shift_hours = st.sidebar.number_input("Shift Length (hours)", value=8.5, step=0.5)
-multilingual_premium = st.sidebar.slider("Multilingual Premium (%)", 0, 15, 5)
 
 st.sidebar.subheader("💼 Business Impact Assumptions")
 production_percent = st.sidebar.number_input("Production Improvement (%)", value=25.0, step=0.1)
@@ -81,6 +80,9 @@ baseline_human_cost = base_labor_cost * fully_loaded_multiplier
 
 # 5. Net savings (Direct only)
 net_savings = baseline_human_cost - ai_enabled_cost
+
+# --- Define early strategic_total to avoid NameError ---
+strategic_total = 0  # Temporary placeholder in case HR impact is not calculated yet
 
 # 6. ROI Calculation Toggles
 use_indirects = st.sidebar.checkbox("Include Indirect Value in ROI Calculation", value=True)
@@ -362,7 +364,7 @@ donut_fig = go.Figure(data=[go.Pie(
     marker=dict(colors=["#1f77b4", "#ff7f0e", "#2ca02c"])
 )])
 donut_fig.update_layout(
-    height=400,
+    height=500,
     showlegend=True,
     title="AI-Enabled Monthly Cost Breakdown",
     plot_bgcolor="rgba(0,0,0,0)"
@@ -432,7 +434,7 @@ hr_donut = go.Figure(data=[go.Pie(
     marker=dict(colors=["#e377c2", "#bcbd22", "#17becf"])
 )])
 hr_donut.update_layout(
-    height=400,
+    height=500,
     showlegend=True,
     title="Strategic Operational Impact Composition",
     plot_bgcolor="rgba(0,0,0,0)"
