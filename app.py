@@ -90,14 +90,6 @@ st.sidebar.markdown("---")
 use_indirects = st.sidebar.checkbox("Include Indirect Value in ROI Calculation", value=True)
 use_hr_impact = st.sidebar.checkbox("Include Strategic HR Savings in ROI", value=False)
  
-# B. Absenteeism Cost
-absence_rate = (no_show / 100) + (pto_days / 260)  # 260 workdays/year
-absentee_cost = absence_rate * base_labor_cost
-
-# C. Seasonal Coverage Cost Avoided
-seasonal_hours = (peak_staffing / 100) * required_agents * shift_hours * peak_frequency
-seasonal_savings = seasonal_hours * hourly_cost * fully_loaded_multiplier
-
 # Apply selected components to ROI basis
 value_basis = net_savings
 if use_indirects:
