@@ -4,6 +4,21 @@ from PIL import Image
 import pandas as pd
 import plotly.graph_objects as go
 
+def metric_block(label, value, color="#00FFAA", border="#00FFAA", suffix=""):
+    return f"""
+    <div style='
+        background-color: #111;
+        border: 2px solid {border};
+        border-radius: 12px;
+        padding: 15px;
+        width: fit-content;
+        margin-bottom: 25px;
+    '>
+        <div style='color: white; font-size: 16px; margin-bottom: 5px;'>{label}</div>
+        <div style='color: {color}; font-size: 36px; font-weight: bold;'>{suffix}{value:,.0f}</div>
+    </div>
+    """
+    
 # Load logo
 logo = Image.open("connexus_logo.png")
 
@@ -111,19 +126,26 @@ st.caption("These values reflect cost savings compared to your human-only baseli
 
 # --- KPI CARDS ---
 col1, col2, col3, col4 = st.columns(4)
-col1.metric("💰 Net Monthly Savings", f"${net_savings:,.0f}", help="Cost saved per month by implementing AI vs human-only operations.")
-col2.metric("📅 Break-even Period", f"{payback_days:.1f} days", help="Days to recover AI cost from monthly operating savings.")
-col3.metric("📈 ROI on Operating Cost (Monthly)", f"{roi_percent:.1f}%", help="Return on monthly operational spend, not total investment.")
-col4.metric("📈 ROI on Operating Cost (Annual)", f"{annual_roi_percent:.1f}%", help="Annualized return based on operating savings.")
+with col1:
+    st.markdown(metric_block("💰 Net Monthly Savings", net_savings), unsafe_allow_html=True)
+with col2:
+    st.markdown(metric_block("📅 Break-even Period", payback_days, suffix=" days"), unsafe_allow_html=True)
+with col3:
+    st.markdown(metric_block("📈 ROI on Operating Cost (Monthly)", roi_percent, suffix="%"), unsafe_allow_html=True)
+with col4:
+    st.markdown(metric_block("📈 ROI on Operating Cost (Annual)", annual_roi_percent, suffix="%"), unsafe_allow_html=True)
 
 # --- INDIRECT VALUE KPI DISPLAY ---
 st.markdown("### 🧩 Indirect Impact from AI (Performance Uplift)")
 st.caption("These gains reflect enhanced output from improved efficiency and upselling performance — not direct cost reduction.")
 
 col1, col2, col3 = st.columns(3)
-col1.metric("🧠 Efficiency Gains", f"${production_savings:,.0f}", help="Estimated savings from improved production and performance.")
-col2.metric("🛒 Upsell Gains", f"${upsell_savings:,.0f}", help="Revenue uplift from increased conversion or upselling.")
-col3.metric("🎯 Total Monthly Value", f"${total_monthly_value:,.0f}", help="Combined monthly value from savings and uplift.")
+with col1:
+    st.markdown(metric_block("🧠 Efficiency Gains", production_savings), unsafe_allow_html=True)
+with col2:
+    st.markdown(metric_block("🛒 Upsell Gains", upsell_savings, color="#1f77b4", border="#1f77b4"), unsafe_allow_html=True)
+with col3:
+    st.markdown(metric_block("🎯 Total Monthly Value", total_monthly_value, color="#FFD700", border="#FFD700"), unsafe_allow_html=True)
 
 # --- AI Investment Visual ---
 st.markdown("### 💡 AI Investment Impact")
@@ -295,23 +317,12 @@ st.markdown("### 🧾 Cost Comparison (Human vs. AI)")
 st.caption("Shows absolute monthly cost difference between traditional staffing and AI-enhanced operations.")
 
 col1, col2 = st.columns(2)
-col1, col2 = st.columns(2)
 
 with col1:
-    st.markdown(f"""
-        <div style='padding: 10px;'>
-            <div style='font-size:18px; color:#AAAAAA;'>👥 Human-Only Cost</div>
-            <div style='font-size:42px; font-weight:bold; color:white;'>${baseline_human_cost:,.0f}</div>
-        </div>
-    """, unsafe_allow_html=True)
+    st.markdown(metric_block("👥 Human-Only Cost", baseline_human_cost), unsafe_allow_html=True)
 
 with col2:
-    st.markdown(f"""
-        <div style='padding: 10px;'>
-            <div style='font-size:18px; color:#AAAAAA;'>🤖 AI-Enabled Cost</div>
-            <div style='font-size:42px; font-weight:bold; color:white;'>${ai_enabled_cost:,.0f}</div>
-        </div>
-    """, unsafe_allow_html=True)
+    st.markdown(metric_block("🤖 AI-Enabled Cost", ai_enabled_cost, color="#FFD700", border="#FFD700"), unsafe_allow_html=True)
  
 # --- WATERFALL ---
 st.markdown("## 💧 Monthly Cost Breakdown (Waterfall)")
@@ -515,63 +526,20 @@ else:
 # --- Display 3 Metrics in Boxes ---
 col1, col2, col3 = st.columns(3)
 
+col1, col2, col3 = st.columns(3)
+
 with col1:
-    st.markdown("#### 🧾 Recruiting Savings")
-    st.markdown(f"""
-    <div style='
-        background-color: #111;
-        border: 2px solid #1f77b4;
-        border-radius: 10px;
-        padding: 15px;
-        width: fit-content;
-    '>
-        <span style='color:#1f77b4; font-size: 32px; font-weight: bold;'>${strategic_total:,.0f}</span>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(metric_block("🧾 Recruiting Savings", recruiting_savings, color="#1f77b4", border="#1f77b4"), unsafe_allow_html=True)
 
 with col2:
-    st.markdown("#### 🚫 Absenteeism Savings")
-    st.markdown(f"""
-    <div style='
-        background-color: #111;
-        border: 2px solid #bcbd22;
-        border-radius: 10px;
-        padding: 15px;
-        width: fit-content;
-    '>
-        <span style='color:#bcbd22; font-size: 32px; font-weight: bold;'>${absentee_cost:,.0f}</span>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(metric_block("🚫 Absenteeism Savings", absentee_cost, color="#bcbd22", border="#bcbd22"), unsafe_allow_html=True)
 
 with col3:
-    st.markdown("#### 📈 Seasonal Staffing Savings")
-    st.markdown(f"""
-    <div style='
-        background-color: #111;
-        border: 2px solid #17becf;
-        border-radius: 10px;
-        padding: 15px;
-        width: fit-content;
-    '>
-        <span style='color:#17becf; font-size: 32px; font-weight: bold;'>${seasonal_savings:,.0f}</span>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(metric_block("📈 Seasonal Staffing Savings", seasonal_savings, color="#17becf", border="#17becf"), unsafe_allow_html=True)
 
 # --- Total Strategic HR Impact
 st.markdown("### 💼 Total Strategic HR Efficiency Impact")
-st.markdown(
-    f"""
-    <div style='
-        background-color: #222;
-        border-left: 6px solid #FFD700;
-        padding: 20px;
-        margin-bottom: 30px;
-    '>
-        <span style='color:#FFD700; font-size: 36px; font-weight: bold;'>${strategic_total:,.0f}</span>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+st.markdown(metric_block("⭐ Combined HR Efficiency Gains", strategic_total, color="#FFD700", border="#FFD700", suffix="$"), unsafe_allow_html=True)
 
 # --- HR Strategic Donut Chart ---
 st.markdown("## 📊 Breakdown of HR & Seasonal Efficiency Gains")
