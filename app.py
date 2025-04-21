@@ -408,12 +408,12 @@ st.markdown("## 🧠 Strategic Operational Impact (HR & Seasonal Savings)")
 st.caption("These insights reflect cost avoidance and hidden savings from reduced churn, absenteeism, and seasonal volume strain.")
 
 with st.expander("Optional Inputs (HR & Peak Variables)"):
-    attrition = st.slider("Monthly Attrition Rate (%)", 0, 50, 10)
-    no_show = st.slider("No‑Call/No‑Show Rate (%)", 0, 20, 5)
-    pto_days = st.slider("PTO/Sick‑Leave Days/Year", 0, 30, 5)
-    new_hire_cost = st.number_input("Cost per New Hire ($)", value=2000, step=500)
-    peak_staffing = st.slider("Peak Volume Staffing Increase (%)", 0, 50, 10)
-    peak_frequency = st.slider("Peak Volume Occurrence (per year)", 0, 12, 3)
+    attrition = st.slider("Monthly Attrition Rate (%)", 0, 50, 10, key="bottom_attrition")
+    no_show = st.slider("No‑Call/No‑Show Rate (%)", 0, 20, 5, key="bottom_noshow")
+    pto_days = st.slider("PTO/Sick‑Leave Days/Year", 0, 30, 5, key="bottom_pto")
+    new_hire_cost = st.number_input("Cost per New Hire ($)", value=2000, step=500, key="bottom_hire_cost")
+    peak_staffing = st.slider("Peak Volume Staffing Increase (%)", 0, 50, 10, key="bottom_peak_staffing")
+    peak_frequency = st.slider("Peak Volume Occurrence (per year)", 0, 12, 3, key="bottom_peak_freq")
 
 # --- Step 2: Strategic Value Calculations ---
 # A. Avoided Recruiting Cost
