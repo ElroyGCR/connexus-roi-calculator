@@ -18,6 +18,9 @@ def metric_block(label, value, color="#00FFAA", border="#00FFAA", suffix=""):
         <div style='color: {color}; font-size: 36px; font-weight: bold;'>{suffix}{value:,.0f}</div>
     </div>
     """
+
+def caption(text):
+    return f"<div style='color: white; font-size: 15px; margin-bottom: 10px;'>{text}</div>"
     
 # Load logo
 logo = Image.open("connexus_logo.png")
@@ -122,7 +125,7 @@ total_monthly_value = net_savings + indirect_savings
 annual_net_savings = total_monthly_value * 12
 
 st.markdown("### 📊 Core Financial Metrics (Operating Basis)")
-st.caption("These values reflect cost savings compared to your human-only baseline.")
+st.markdown(caption("These values reflect cost savings compared to your human-only baseline."), unsafe_allow_html=True)
 
 # --- KPI CARDS ---
 col1, col2, col3, col4 = st.columns(4)
@@ -137,7 +140,7 @@ with col4:
 
 # --- INDIRECT VALUE KPI DISPLAY ---
 st.markdown("### 🧩 Indirect Impact from AI (Performance Uplift)")
-st.caption("These gains reflect enhanced output from improved efficiency and upselling performance — not direct cost reduction.")
+st.markdown(caption("These gains reflect enhanced output from improved efficiency..."), unsafe_allow_html=True)
 
 col1, col2, col3 = st.columns(3)
 with col1:
@@ -149,11 +152,21 @@ with col3:
 
 # --- AI Investment Visual ---
 st.markdown("### 💡 AI Investment Impact")
-st.caption("Shows how much value is returned for every dollar spent on AI — includes both cost savings and indirect gains.")
+st.caption("Shows how much value is returned for every dollar spent on AI — includes both cost savings and indirect gains.")st.markdown(caption("Shows how much value is returned for every dollar spent on AI..."), unsafe_allow_html=True)
 
 st.markdown(
     f"""
-    <div style='font-size: 22px; margin-top: 10px;'>
+    <div style='
+        background-color: #111;
+        border: 2px solid #00FFAA;
+        border-radius: 12px;
+        padding: 18px 25px;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        font-size: 20px;
+        font-weight: 500;
+        color: white;
+    '>
         For every <span style='color:#FFD700; font-weight:600;'>$1</span> you invest in AI, you save:
         <span style='color:#00FFAA; font-size: 28px; font-weight:700;'>${dollar_saved_per_ai_dollar:,.2f}</span>
     </div>
