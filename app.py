@@ -152,7 +152,7 @@ with col3:
 
 # --- AI Investment Visual ---
 st.markdown("### 💡 AI Investment Impact")
-st.caption("Shows how much value is returned for every dollar spent on AI — includes both cost savings and indirect gains.")st.markdown(caption("Shows how much value is returned for every dollar spent on AI..."), unsafe_allow_html=True)
+st.markdown(caption("Shows how much value is returned for every dollar spent on AI — includes both cost savings and indirect gains."), unsafe_allow_html=True)
 
 st.markdown(
     f"""
@@ -327,7 +327,7 @@ with col2:
  
 # --- COST COMPARISON: Human vs AI ---
 st.markdown("### 🧾 Cost Comparison (Human vs. AI)")
-st.caption("Shows absolute monthly cost difference between traditional staffing and AI-enhanced operations.")
+st.markdown(caption("Shows absolute monthly cost difference between traditional staffing and AI-enhanced operations."), unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
 
