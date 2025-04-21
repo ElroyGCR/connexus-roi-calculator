@@ -494,13 +494,18 @@ else:
     hr_peak_staffing = 0
     hr_peak_frequency = 0
 
+# --- Strategic HR Placeholder Values (to prevent NameErrors if HR toggle is off) ---
+absentee_cost = 0
+seasonal_savings = 0
+recruiting_savings = 0
+
 # --- Strategic Value Calculations (Updated to Use Sidebar Inputs) ---
 if use_hr_impact:
     total_annual_attrition = hr_attrition / 100 * effective_agents * 12
     absence_rate = (hr_no_show / 100) + (hr_pto_days / 260)
     recruiting_savings = total_annual_attrition * hr_new_hire_cost
     seasonal_hours = (hr_peak_staffing / 100) * required_agents * shift_hours * hr_peak_frequency
-    seasonal_savings = seasonal_hours * hourly_cost * fully_loaded_multiplier  # ✅ Add this line
+    seasonal_savings = seasonal_hours * hourly_cost * fully_loaded_multiplier
     absentee_cost = absence_rate * base_labor_cost
     strategic_total = recruiting_savings + absentee_cost + seasonal_savings
     value_basis += strategic_total
