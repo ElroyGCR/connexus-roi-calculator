@@ -36,7 +36,6 @@ new_hire_cost = st.sidebar.number_input("Cost per New Hire ($)", value=2000, ste
 multilingual_premium = st.sidebar.slider("Multilingual Premium (%)", 0, 15, 5)
 peak_staffing = st.sidebar.slider("Peak Volume Staffing Increase (%)", 0, 50, 10)
 peak_frequency = st.sidebar.slider("Peak Volume Occurrence (per year)", 0, 12, 3)
-support_staff_pct = st.sidebar.slider("Support Staff Overhead (%)", 0, 30, 20)
 
 st.sidebar.subheader("💼 Business Impact Assumptions")
 production_percent = st.sidebar.number_input("Production Improvement (%)", value=25.0, step=0.1)
@@ -83,8 +82,8 @@ minutes_per_agent = agent_monthly_hours * 60
 required_agents = monthly_minutes / minutes_per_agent
 effective_agents = max(agents, required_agents)
 base_labor_cost = effective_agents * agent_monthly_hours * hourly_cost
-support_staff_cost = base_labor_cost * (support_staff_pct / 100)
-baseline_human_cost = (base_labor_cost + support_staff_cost) * 1.222431
+fully_loaded_multiplier = 1.222431
+baseline_human_cost = base_labor_cost * fully_loaded_multiplier
 
 # 5. Net savings (Direct only)
 net_savings = baseline_human_cost - ai_enabled_cost
@@ -104,30 +103,41 @@ dollar_saved_per_ai_dollar = (value_basis / total_ai_monthly_cost) if total_ai_m
 total_monthly_value = net_savings + indirect_savings
 annual_net_savings = total_monthly_value * 12
 
+st.markdown("### 📊 Core Financial Metrics (Operating Basis)")
+st.caption("These values reflect cost savings compared to your human-only baseline.")
+
 # --- KPI CARDS ---
 col1, col2, col3, col4 = st.columns(4)
-col1.metric("💰 Net Monthly Savings", f"${net_savings:,.0f}")
-col2.metric("📅 Payback Time", f"{payback_days:.1f} days")
-col3.metric("📈 ROI (Monthly %)", f"{roi_percent:.1f}%")
-col4.metric("📈 ROI (Annual %)", f"{annual_roi_percent:.1f}%")
+col1.metric("💰 Net Monthly Savings", f"${net_savings:,.0f}", help="Cost saved per month by implementing AI vs human-only operations.")
+col2.metric("📅 Break-even Period", f"{payback_days:.1f} days", help="Days to recover AI cost from monthly operating savings.")
+col3.metric("📈 ROI on Operating Cost (Monthly)", f"{roi_percent:.1f}%", help="Return on monthly operational spend, not total investment.")
+col4.metric("📈 ROI on Operating Cost (Annual)", f"{annual_roi_percent:.1f}%", help="Annualized return based on operating savings.")
 
 # --- INDIRECT VALUE KPI DISPLAY ---
-st.markdown("### 🌟 Total Value & Indirect Impact")
+st.markdown("### 🧩 Indirect Impact from AI (Performance Uplift)")
+st.caption("These gains reflect enhanced output from improved efficiency and upselling performance — not direct cost reduction.")
 
 col1, col2, col3 = st.columns(3)
-col1.metric("🧠 Production Gains", f"${production_savings:,.0f}")
-col2.metric("📈 Upsell Gains", f"${upsell_savings:,.0f}")
-col3.metric("🎯 Total Monthly Value", f"${total_monthly_value:,.0f}")
+col1.metric("🧠 Efficiency Gains", f"${production_savings:,.0f}", help="Estimated savings from improved production and performance.")
+col2.metric("🛒 Upsell Gains", f"${upsell_savings:,.0f}", help="Revenue uplift from increased conversion or upselling.")
+col3.metric("🎯 Total Monthly Value", f"${total_monthly_value:,.0f}", help="Combined monthly value from savings and uplift.")
 
 # --- AI Investment Visual ---
 st.markdown("### 💡 AI Investment Impact")
+st.caption("Shows how much value is returned for every dollar spent on AI — includes both cost savings and indirect gains.")
+
 st.markdown(
-    f"<div style='font-size: 22px;'><strong>For every</strong> <span style='color:#FFD700;'>$1</span> <strong>you spend on AI, you save</strong>: "
-    f"<span style='color:#00FFAA; font-size: 28px;'>${dollar_saved_per_ai_dollar:,.2f}</span></div>",
+    f"""
+    <div style='font-size: 22px; margin-top: 10px;'>
+        For every <span style='color:#FFD700; font-weight:600;'>$1</span> you invest in AI, you save:
+        <span style='color:#00FFAA; font-size: 28px; font-weight:700;'>${dollar_saved_per_ai_dollar:,.2f}</span>
+    </div>
+    """,
     unsafe_allow_html=True
 )
+
 # --- ROI & Payback Gauges ---
-st.markdown("## 🎯 ROI & Break-even Overview")
+st.markdown("## 🎯 ROI & Break-even Based on Operating Cost")
 col1, col2 = st.columns(2)
 
 gauge_fig = go.Figure(go.Indicator(
@@ -168,6 +178,60 @@ with col1:
 with col2:
     st.plotly_chart(payback_gauge, use_container_width=True)
 
+# --- INVESTMENT-BASED ROI & PAYBACK ---
+st.markdown("## 💼 ROI & Break-even Based on Investment")
+
+investment_roi = ((annual_net_savings - integration) / integration) * 100 if integration > 0 else 0
+investment_payback_months = (integration / annual_net_savings) * 12 if annual_net_savings > 0 else 999
+
+col1, col2 = st.columns(2)
+
+inv_roi_gauge = go.Figure(go.Indicator(
+    mode="gauge+number+delta",
+    value=investment_roi,
+    delta={'reference': 100, 'increasing': {'color': "green"}, 'decreasing': {'color': "red"}},
+    gauge={
+        'axis': {'range': [0, 200]},
+        'bar': {'color': "darkblue"},
+        'steps': [
+            {'range': [0, 50], 'color': 'lightgray'},
+            {'range': [50, 100], 'color': 'lightblue'},
+            {'range': [100, 200], 'color': 'lightgreen'}
+        ],
+        'threshold': {'line': {'color': "red", 'width': 4}, 'value': 50}
+    },
+    title={'text': "Investment ROI (%)"}
+))
+
+inv_payback_gauge = go.Figure(go.Indicator(
+    mode="gauge+number",
+    value=investment_payback_months,
+    title={'text': "Payback Period (Months)"},
+    gauge={
+        'axis': {'range': [0, 24]},
+        'bar': {'color': "black"},
+        'steps': [
+            {'range': [0, 6], 'color': "lightgreen"},
+            {'range': [6, 12], 'color': "yellow"},
+            {'range': [12, 24], 'color': "tomato"}
+        ],
+        'threshold': {'line': {'color': "red", 'width': 4}, 'value': 12}
+    }
+))
+
+with col1:
+    st.plotly_chart(inv_roi_gauge, use_container_width=True)
+with col2:
+    st.plotly_chart(inv_payback_gauge, use_container_width=True)
+ 
+# --- COST COMPARISON: Human vs AI ---
+st.markdown("### 🧾 Cost Comparison (Human vs. AI)")
+st.caption("Shows absolute monthly cost difference between traditional staffing and AI-enhanced operations.")
+
+col1, col2 = st.columns(2)
+col1.metric("👥 Human-Only Cost", f"${baseline_human_cost:,.0f}")
+col2.metric("🤖 AI-Enabled Cost", f"${ai_enabled_cost:,.0f}")
+ 
 # --- WATERFALL ---
 st.markdown("## 💧 Monthly Cost Breakdown (Waterfall)")
 
@@ -175,29 +239,26 @@ waterfall_fig = go.Figure(go.Waterfall(
     name="Monthly Cost",
     orientation="v",
     measure=[
-        "absolute",  # 100% Human
-        "relative",  # - Labor removed
-        "relative",  # - Support overhead
-        "relative",  # + AI Usage
-        "relative",  # + Subscription
-        "absolute"   # AI-enabled Net Cost
-    ],
-    x=[
-        "100% Human Cost",
-        "Reduced Labor",
-        "Reduced Overhead",
-        "Add: AI Usage",
-        "Add: Subscription",
-        "Net AI-Enabled Cost"
-    ],
-    y=[
-        baseline_human_cost,
-        -residual_cost,
-        -support_staff_cost,
-        ai_cost,
-        subscription,
-        ai_enabled_cost
-    ],
+    "absolute",  # 100% Human
+    "relative",  # - Labor removed
+    "relative",  # + AI Usage
+    "relative",  # + Subscription
+    "absolute"   # AI-enabled Net Cost
+],
+x=[
+    "100% Human Cost",
+    "Reduced Labor",
+    "Add: AI Usage",
+    "Add: Subscription",
+    "Net AI-Enabled Cost"
+],
+y=[
+    baseline_human_cost,
+    -residual_cost,
+    ai_cost,
+    subscription,
+    ai_enabled_cost
+],
     connector={"line": {"color": "rgb(63, 63, 63)"}}
 ))
 
@@ -262,7 +323,10 @@ st.plotly_chart(donut_fig, use_container_width=True)
 # --- Monthly Cost Reduction ---
 monthly_cost_reduction = (net_savings / baseline_human_cost) * 100 if baseline_human_cost > 0 else 0
 
-st.markdown("## 📉 Monthly Cost Reduction")
-st.caption("Savings vs. Old Cost")
+st.markdown("### 💸 Monthly Cost Efficiency")
+st.caption("This shows how much your monthly costs drop compared to a fully human-run operation.")
 
-st.markdown(f"<h2 style='color:#00FFAA; font-size: 36px;'>{monthly_cost_reduction:.2f}%</h2>", unsafe_allow_html=True)
+st.markdown(
+    f"<h2 style='color:#00FFAA; font-size: 36px; margin-top: 10px;'>{monthly_cost_reduction:.2f}%</h2>",
+    unsafe_allow_html=True
+)
