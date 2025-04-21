@@ -90,10 +90,6 @@ st.sidebar.markdown("---")
 use_indirects = st.sidebar.checkbox("Include Indirect Value in ROI Calculation", value=True)
 use_hr_impact = st.sidebar.checkbox("Include Strategic HR Savings in ROI", value=False)
 
-# --- ROI Toggles ---
-use_indirects = st.sidebar.checkbox("Include Indirect Value in ROI Calculation", value=True)
-use_hr_impact = st.sidebar.checkbox("Include Strategic HR Savings in ROI", value=False)
-
 if use_hr_impact:
     with st.sidebar.expander("Adjust HR Impact Assumptions"):
         attrition = st.slider("Monthly Attrition Rate (%)", 0, 50, 10)
