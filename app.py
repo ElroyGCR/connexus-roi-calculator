@@ -120,15 +120,10 @@ absentee_cost = absence_rate * base_labor_cost
 seasonal_hours = (peak_staffing / 100) * required_agents * shift_hours * peak_frequency
 seasonal_savings = seasonal_hours * hourly_cost * fully_loaded_multiplier
 
-# Total Strategic Value
-strategic_total = recruiting_savings + absentee_cost + seasonal_savings
- 
 # Apply selected components to ROI basis
 value_basis = net_savings
 if use_indirects:
     value_basis += indirect_savings
-if use_hr_impact:
-    value_basis += strategic_total
 
 # 7. ROI & Payback
 roi_percent = (value_basis / ai_enabled_cost) * 100 if ai_enabled_cost > 0 else 0
@@ -512,20 +507,28 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-with st.expander("Optional Inputs (HR & Peak Variables)"):
-    attrition = st.slider("Monthly Attrition Rate (%)", 0, 50, 10, key="bottom_attrition")
-    no_show = st.slider("No‑Call/No‑Show Rate (%)", 0, 20, 5, key="bottom_no_show")
-    pto_days = st.slider("PTO/Sick‑Leave Days/Year", 0, 30, 5, key="bottom_pto")
-    new_hire_cost = st.number_input("Cost per New Hire ($)", value=2000, step=500, key="bottom_new_hire_cost")
-    peak_staffing = st.slider("Peak Volume Staffing Increase (%)", 0, 50, 10, key="bottom_peak_staffing")
-    peak_frequency = st.slider("Peak Volume Occurrence (per year)", 0, 12, 3, key="bottom_peak_frequency")
+if use_hr_impact:
+    with st.sidebar.expander("Adjust HR Impact Assumptions"):
+        hr_attrition = st.slider("Monthly Attrition Rate (%)", 0, 50, 10, key="bottom_attrition")
+        hr_no_show = st.slider("No‑Call/No‑Show Rate (%)", 0, 20, 5, key="bottom_noshow")
+        hr_pto_days = st.slider("PTO/Sick‑Leave Days/Year", 0, 30, 5, key="bottom_pto")
+        hr_new_hire_cost = st.number_input("Cost per New Hire ($)", value=2000, step=500, key="bottom_hire_cost")
+        hr_peak_staffing = st.slider("Peak Volume Staffing Increase (%)", 0, 50, 10, key="bottom_peak_staffing")
+        hr_peak_frequency = st.slider("Peak Volume Occurrence (per year)", 0, 12, 3, key="bottom_peak_freq")
+else:
+    # Fallbacks if HR impact not used
+    hr_attrition = 0
+    hr_no_show = 0
+    hr_pto_days = 0
+    hr_new_hire_cost = 0
+    hr_peak_staffing = 0
+    hr_peak_frequency = 0
 
 # --- Strategic Value Calculations ---
-total_annual_attrition = attrition / 100 * effective_agents * 12
-recruiting_savings = total_annual_attrition * new_hire_cost
-absence_rate = (no_show / 100) + (pto_days / 260)
-absentee_cost = absence_rate * base_labor_cost
-seasonal_hours = (peak_staffing / 100) * required_agents * shift_hours * peak_frequency
+total_annual_attrition = hr_attrition / 100 * effective_agents * 12
+absence_rate = (hr_no_show / 100) + (hr_pto_days / 260)
+recruiting_savings = total_annual_attrition * hr_new_hire_cost
+seasonal_hours = (hr_peak_staffing / 100) * required_agents * shift_hours * hr_peak_frequency
 seasonal_savings = seasonal_hours * hourly_cost * fully_loaded_multiplier
 strategic_total = recruiting_savings + absentee_cost + seasonal_savings
 
