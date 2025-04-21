@@ -106,7 +106,23 @@ else:
     new_hire_cost = 0
     peak_staffing = 0
     peak_frequency = 0
-    
+ 
+# --- Step 2: Strategic Value Calculations ---
+# A. Avoided Recruiting Cost
+total_annual_attrition = attrition / 100 * effective_agents * 12
+recruiting_savings = total_annual_attrition * new_hire_cost
+
+# B. Absenteeism Cost
+absence_rate = (no_show / 100) + (pto_days / 260)  # 260 workdays/year
+absentee_cost = absence_rate * base_labor_cost
+
+# C. Seasonal Coverage Cost Avoided
+seasonal_hours = (peak_staffing / 100) * required_agents * shift_hours * peak_frequency
+seasonal_savings = seasonal_hours * hourly_cost * fully_loaded_multiplier
+
+# Total Strategic Value
+strategic_total = recruiting_savings + absentee_cost + seasonal_savings
+ 
 # Apply selected components to ROI basis
 value_basis = net_savings
 if use_indirects:
@@ -414,22 +430,6 @@ with st.expander("Optional Inputs (HR & Peak Variables)"):
     new_hire_cost = st.number_input("Cost per New Hire ($)", value=2000, step=500, key="bottom_hire_cost")
     peak_staffing = st.slider("Peak Volume Staffing Increase (%)", 0, 50, 10, key="bottom_peak_staffing")
     peak_frequency = st.slider("Peak Volume Occurrence (per year)", 0, 12, 3, key="bottom_peak_freq")
-
-# --- Step 2: Strategic Value Calculations ---
-# A. Avoided Recruiting Cost
-total_annual_attrition = attrition / 100 * effective_agents * 12
-recruiting_savings = total_annual_attrition * new_hire_cost
-
-# B. Absenteeism Cost
-absence_rate = (no_show / 100) + (pto_days / 260)  # 260 workdays/year
-absentee_cost = absence_rate * base_labor_cost
-
-# C. Seasonal Coverage Cost Avoided
-seasonal_hours = (peak_staffing / 100) * required_agents * shift_hours * peak_frequency
-seasonal_savings = seasonal_hours * hourly_cost * fully_loaded_multiplier
-
-# Total Strategic Value
-strategic_total = recruiting_savings + absentee_cost + seasonal_savings
 
 # --- Step 3: Display Metrics ---
 col1, col2, col3 = st.columns(3)
