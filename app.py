@@ -132,7 +132,8 @@ col1, col2, col3, col4 = st.columns(4)
 with col1:
     st.markdown(metric_block("💰 Net Monthly Savings", net_savings), unsafe_allow_html=True)
 with col2:
-    st.markdown(metric_block("📅 Break-even Period", payback_days, suffix=" days"), unsafe_allow_html=True)
+    st.markdown(metric_block("📅 Break-even Period", payback_days, suffix=""), unsafe_allow_html=True)
+st.markdown("<div style='margin-top: -30px; font-size: 16px; color: white;'>days</div>", unsafe_allow_html=True)
 with col3:
     st.markdown(metric_block("📈 ROI on Operating Cost (Monthly)", roi_percent, suffix="%"), unsafe_allow_html=True)
 with col4:
@@ -163,12 +164,13 @@ st.markdown(
         padding: 18px 25px;
         margin-top: 10px;
         margin-bottom: 20px;
-        font-size: 20px;
+        font-size: 22px;
         font-weight: 500;
         color: white;
+        text-align: center;
     '>
-        For every <span style='color:#FFD700; font-weight:600;'>$1</span> you invest in AI, you save:
-        <span style='color:#00FFAA; font-size: 28px; font-weight:700;'>${dollar_saved_per_ai_dollar:,.2f}</span>
+        For every <span style='color:#FFD700; font-size: 32px; font-weight:800;'>$1</span> you invest in AI, you save:
+        <span style='color:#00FFAA; font-size: 36px; font-weight:900;'>${dollar_saved_per_ai_dollar:,.2f}</span>
     </div>
     """,
     unsafe_allow_html=True
