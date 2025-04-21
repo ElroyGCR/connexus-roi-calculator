@@ -176,7 +176,16 @@ st.markdown(
 
 # --- ROI Composition Chart ---
 st.markdown("### 📊 ROI Value Composition Breakdown")
-st.caption("This chart breaks down what contributes to your ROI — direct savings, indirect value, and HR strategic impact.")
+st.markdown(
+    """
+    <div style='color: white; font-size: 15px; margin-top: -10px; margin-bottom: 20px;'>
+        Each bar shows how much that category adds to your monthly ROI. 
+        <br>Direct savings come from lower labor costs, indirect value from productivity/upsell gains, 
+        and HR impact from avoided hiring and absenteeism costs.
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # Prepare data for chart
 roi_components = {
@@ -209,6 +218,16 @@ st.plotly_chart(roi_bar, use_container_width=True)
 
 # --- ROI & Payback Gauges ---
 st.markdown("## 🎯 ROI & Break-even Based on Operating Cost")
+st.markdown(
+    """
+    <div style='color: white; font-size: 15px; margin-top: -10px; margin-bottom: 20px;'>
+        These gauges show how much operational return you’re generating each month with AI. 
+        <br><strong>ROI (%)</strong> reflects direct cost savings plus optional performance and HR gains.
+        <br><strong>Payback Time (Days)</strong> shows how quickly you break even based on monthly savings.
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 col1, col2 = st.columns(2)
 
 gauge_fig = go.Figure(go.Indicator(
@@ -251,9 +270,16 @@ with col2:
 
 # --- INVESTMENT-BASED ROI & PAYBACK ---
 st.markdown("## 💼 ROI & Break-even Based on Investment")
-
-investment_roi = ((annual_net_savings - integration) / integration) * 100 if integration > 0 else 0
-investment_payback_months = (integration / annual_net_savings) * 12 if annual_net_savings > 0 else 999
+st.markdown(
+    """
+    <div style='color: white; font-size: 15px; margin-top: -10px; margin-bottom: 20px;'>
+        This section measures ROI compared to your up-front investment (integration cost).
+        <br><strong>Investment ROI (%)</strong> calculates your return over the course of a year.
+        <br><strong>Payback Period (Months)</strong> estimates how many months it takes to recoup initial setup costs.
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 col1, col2 = st.columns(2)
 
@@ -320,6 +346,17 @@ with col2:
  
 # --- WATERFALL ---
 st.markdown("## 💧 Monthly Cost Breakdown (Waterfall)")
+st.markdown(
+    """
+    <div style='color: white; font-size: 15px; margin-top: -10px; margin-bottom: 20px;'>
+        This chart breaks down your full monthly cost transition from a 100% human-run operation 
+        to a partially automated AI-powered one. 
+        <br>It visualizes how labor is reduced, AI costs are added, and what the final AI-enabled 
+        operating cost looks like — so you can clearly see the shift in monthly spending.
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 waterfall_fig = go.Figure(go.Waterfall(
     name="Monthly Cost",
@@ -360,6 +397,17 @@ st.plotly_chart(waterfall_fig, use_container_width=True)
 
 # --- LINE CHART ---
 st.markdown("## 📈 Savings vs Integration Cost Over Time")
+st.markdown(
+    """
+    <div style='color: white; font-size: 15px; margin-top: -10px; margin-bottom: 20px;'>
+        This chart compares cumulative monthly savings against your initial integration cost.
+        <br>The green line shows how your savings grow over time, while the dashed red line represents 
+        the one-time setup investment — giving you a clear visual of when ROI is achieved.
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 months = list(range(1, 13))
 cumulative_savings = [net_savings * m for m in months]
 integration_cost_line = [integration for _ in months]
@@ -391,6 +439,17 @@ st.plotly_chart(line_fig, use_container_width=True)
 
 # --- DONUT CHART ---
 st.markdown("## 🍩 AI Cost Composition (Donut Chart)")
+st.markdown(
+    """
+    <div style='color: white; font-size: 15px; margin-top: -10px; margin-bottom: 20px;'>
+        This chart visualizes the composition of your AI-enabled monthly operating cost.
+        <br>It breaks down how much is spent on AI usage, remaining labor, and platform subscription —
+        helping you see where your new cost structure lies.
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 donut_fig = go.Figure(data=[go.Pie(
     labels=["AI Usage", "Residual Labor", "Subscription"],
     values=[ai_cost, residual_cost, subscription],
@@ -410,10 +469,29 @@ st.plotly_chart(donut_fig, use_container_width=True)
 monthly_cost_reduction = (net_savings / baseline_human_cost) * 100 if baseline_human_cost > 0 else 0
 
 st.markdown("### 💸 Monthly Cost Efficiency")
-st.caption("This shows how much your monthly costs drop compared to a fully human-run operation.")
-
 st.markdown(
-    f"<h2 style='color:#00FFAA; font-size: 36px; margin-top: 10px;'>{monthly_cost_reduction:.2f}%</h2>",
+    """
+    <div style='color: white; font-size: 15px; margin-top: -10px; margin-bottom: 15px;'>
+        This shows how much your monthly costs drop compared to a fully human-run operation.
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# Stylized cost efficiency stat
+st.markdown(
+    f"""
+    <div style='
+        background-color: #111;
+        border: 2px solid #00FFAA;
+        border-radius: 12px;
+        padding: 15px;
+        width: fit-content;
+        margin-bottom: 25px;
+    '>
+        <span style='color:#00FFAA; font-size: 36px; font-weight: bold;'>{monthly_cost_reduction:.2f}%</span>
+    </div>
+    """,
     unsafe_allow_html=True
 )
 
@@ -421,36 +499,111 @@ st.markdown(
 # --- HR Efficiency & Operational Impact ---
 st.markdown("---")
 st.markdown("## 🧠 Strategic Operational Impact (HR & Seasonal Savings)")
-st.caption("These insights reflect cost avoidance and hidden savings from reduced churn, absenteeism, and seasonal volume strain.")
-
-with st.expander("Optional Inputs (HR & Peak Variables)"):
-    attrition = st.slider("Monthly Attrition Rate (%)", 0, 50, 10, key="bottom_attrition")
-    no_show = st.slider("No‑Call/No‑Show Rate (%)", 0, 20, 5, key="bottom_noshow")
-    pto_days = st.slider("PTO/Sick‑Leave Days/Year", 0, 30, 5, key="bottom_pto")
-    new_hire_cost = st.number_input("Cost per New Hire ($)", value=2000, step=500, key="bottom_hire_cost")
-    peak_staffing = st.slider("Peak Volume Staffing Increase (%)", 0, 50, 10, key="bottom_peak_staffing")
-    peak_frequency = st.slider("Peak Volume Occurrence (per year)", 0, 12, 3, key="bottom_peak_freq")
-
-# --- Step 3: Display Metrics ---
-col1, col2, col3 = st.columns(3)
-col1.metric("🔁 Recruiting Savings", f"${recruiting_savings:,.0f}", help="Estimated onboarding cost saved by reducing attrition.")
-col2.metric("🚫 Absenteeism Savings", f"${absentee_cost:,.0f}", help="Value saved from fewer no-shows and sick days.")
-col3.metric("📈 Seasonal Staffing Savings", f"${seasonal_savings:,.0f}", help="Avoided cost for seasonal overstaffing across peak months.")
-
-st.markdown("### 💼 Total Strategic HR Efficiency Impact")
 st.markdown(
-    f"<h2 style='color:#FFD700; font-size: 36px;'>${strategic_total:,.0f}</h2>",
+    """
+    <div style='color: white; font-size: 15px; margin-top: -10px; margin-bottom: 20px;'>
+        These insights reflect cost avoidance and hidden savings from reduced churn, absenteeism, and seasonal volume strain.
+    </div>
+    """,
     unsafe_allow_html=True
 )
 
-# --- HR Strategic Impact Composition Donut ---
+with st.expander("Optional Inputs (HR & Peak Variables)"):
+    attrition = st.slider("Monthly Attrition Rate (%)", 0, 50, 10)
+    no_show = st.slider("No‑Call/No‑Show Rate (%)", 0, 20, 5)
+    pto_days = st.slider("PTO/Sick‑Leave Days/Year", 0, 30, 5)
+    new_hire_cost = st.number_input("Cost per New Hire ($)", value=2000, step=500)
+    peak_staffing = st.slider("Peak Volume Staffing Increase (%)", 0, 50, 10)
+    peak_frequency = st.slider("Peak Volume Occurrence (per year)", 0, 12, 3)
+
+# --- Strategic Value Calculations ---
+total_annual_attrition = attrition / 100 * effective_agents * 12
+recruiting_savings = total_annual_attrition * new_hire_cost
+absence_rate = (no_show / 100) + (pto_days / 260)
+absentee_cost = absence_rate * base_labor_cost
+seasonal_hours = (peak_staffing / 100) * required_agents * shift_hours * peak_frequency
+seasonal_savings = seasonal_hours * hourly_cost * fully_loaded_multiplier
+strategic_total = recruiting_savings + absentee_cost + seasonal_savings
+
+# --- Display 3 Metrics in Boxes ---
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.markdown("#### 🧾 Recruiting Savings")
+    st.markdown(f"""
+    <div style='
+        background-color: #111;
+        border: 2px solid #1f77b4;
+        border-radius: 10px;
+        padding: 15px;
+        width: fit-content;
+    '>
+        <span style='color:#1f77b4; font-size: 32px; font-weight: bold;'>${recruiting_savings:,.0f}</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col2:
+    st.markdown("#### 🚫 Absenteeism Savings")
+    st.markdown(f"""
+    <div style='
+        background-color: #111;
+        border: 2px solid #bcbd22;
+        border-radius: 10px;
+        padding: 15px;
+        width: fit-content;
+    '>
+        <span style='color:#bcbd22; font-size: 32px; font-weight: bold;'>${absentee_cost:,.0f}</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col3:
+    st.markdown("#### 📈 Seasonal Staffing Savings")
+    st.markdown(f"""
+    <div style='
+        background-color: #111;
+        border: 2px solid #17becf;
+        border-radius: 10px;
+        padding: 15px;
+        width: fit-content;
+    '>
+        <span style='color:#17becf; font-size: 32px; font-weight: bold;'>${seasonal_savings:,.0f}</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+# --- Total Strategic HR Impact
+st.markdown("### 💼 Total Strategic HR Efficiency Impact")
+st.markdown(
+    f"""
+    <div style='
+        background-color: #222;
+        border-left: 6px solid #FFD700;
+        padding: 20px;
+        margin-bottom: 30px;
+    '>
+        <span style='color:#FFD700; font-size: 36px; font-weight: bold;'>${strategic_total:,.0f}</span>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# --- HR Strategic Donut Chart ---
 st.markdown("## 📊 Breakdown of HR & Seasonal Efficiency Gains")
+st.markdown(
+    """
+    <div style='color: white; font-size: 15px; margin-top: -10px; margin-bottom: 20px;'>
+        This donut chart shows how your total HR efficiency impact is split across recruiting cost avoidance,
+        absenteeism reductions, and seasonal staffing efficiency.
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 hr_donut = go.Figure(data=[go.Pie(
     labels=["Recruiting Savings", "Absenteeism Savings", "Seasonal Staffing Savings"],
     values=[recruiting_savings, absentee_cost, seasonal_savings],
     hole=0.5,
     textinfo="label+percent+value",
-    textfont=dict(size=18),  # 🔠 Larger value text inside slices
+    textfont=dict(size=18),
     marker=dict(colors=["#e377c2", "#bcbd22", "#17becf"])
 )])
 hr_donut.update_layout(
@@ -458,7 +611,7 @@ hr_donut.update_layout(
     showlegend=True,
     title="Strategic Operational Impact Composition",
     plot_bgcolor="rgba(0,0,0,0)",
-    font=dict(size=16),  # 🔍 Boosts label font size
-    legend=dict(font=dict(size=14))  # 📘 Improves legend readability
+    font=dict(size=16),
+    legend=dict(font=dict(size=14))
 )
 st.plotly_chart(hr_donut, use_container_width=True)
