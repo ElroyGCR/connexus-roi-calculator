@@ -174,7 +174,7 @@ with col2:
         mode="gauge+number",
         value=investment_payback_months,
         gauge={'axis':{'range':[0,24]}},
-        title={'text':'Payback Period (Months)'})))
+        title={'text': "Payback Period (Months)"},
     st.plotly_chart(pay_fig, use_container_width=True)
 
 # Cost Comparison Waterfall
