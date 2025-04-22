@@ -75,7 +75,7 @@ aio_cost         = ai_minutes * ai_cost_per_min
 fully_loaded_multiplier = 1.222431
 residual_cost    = (residual_minutes / 60) * hourly_cost * fully_loaded_multiplier
 
-aio_enabled_cost      = ai_cost + residual_cost + subscription
+ai_enabled_cost      = ai_cost + residual_cost + subscription
 # Cost excluding residual labor (pure AI spend + subscription)
 total_ai_monthly_cost  = ai_cost + subscription
 
@@ -94,7 +94,7 @@ upsell_dollar_savings   = monthly_revenue * upsell_multiplier
 # Total indirect savings in $ 
 indirect_savings = production_dollar_savings + upsell_dollar_savings
 
-total_monthly_value = (aio_enabled_cost := ai_enabled_cost)  # to preserve ai_enabled_cost name
+total_monthly_value = (ai_enabled_cost := ai_enabled_cost)  # to preserve ai_enabled_cost name
 net_savings           = None  # placeholder below
 
 # --- 4. Baseline Human Cost Calculation ---
