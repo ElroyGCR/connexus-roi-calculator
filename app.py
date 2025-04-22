@@ -4,11 +4,18 @@ import pandas as pd
 import plotly.graph_objects as go
 
 # --- Helper functions for styled metrics and captions ---
-def metric_block(label, value, color="#00FFAA", border="#00FFAA", suffix=""):
+def metric_block(label, value, color="#00FFAA", border="#00FFAA", prefix="", suffix=""):
     return f"""
-    <div style='\n        background-color: #111;\n        border: 2px solid {border};\n        border-radius: 12px;\n        padding: 15px;\n        width: fit-content;\n        margin-bottom: 25px;\n    '>
+    <div style='
+        background-color: #111;
+        border: 2px solid {border};
+        border-radius: 12px;
+        padding: 15px;
+        width: fit-content;
+        margin-bottom: 25px;
+    '>
         <div style='color: white; font-size: 16px; margin-bottom: 5px;'>{label}</div>
-        <div style='color: {color}; font-size: 36px; font-weight: bold;'>{value:,.1f} {suffix}</div>
+        <div style='color: {color}; font-size: 36px; font-weight: bold;'>{prefix}{value:,.1f}{suffix}</div>
     </div>
     """
 
