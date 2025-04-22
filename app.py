@@ -69,7 +69,7 @@ ai_minutes       = (automation / 100) * monthly_minutes
 residual_minutes = monthly_minutes - ai_minutes
 
 # AI spend
-aio_cost         = ai_minutes * ai_cost_per_min
+ai_cost         = ai_minutes * ai_cost_per_min
 
 # Residual human labor after automation, with fully-loaded multiplier
 fully_loaded_multiplier = 1.222431
