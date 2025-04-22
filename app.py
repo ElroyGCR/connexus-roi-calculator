@@ -135,11 +135,11 @@ st.markdown("### 📊 Core Financial Metrics (Operating Basis)")
 st.markdown(caption("These values reflect cost savings compared to your human-only baseline."), unsafe_allow_html=True)
 col1, col2, col3, col4 = st.columns(4)
 with col1:
-    st.markdown(metric_block("💰 Net Monthly Savings", net_savings, suffix="$"), unsafe_allow_html=True)
+    st.markdown(metric_block("💰 Net Monthly Savings", suffix="$", net_savings), unsafe_allow_html=True)
 with col2:
     st.markdown(metric_block("🧾 Break-even Period", payback_days, suffix=" days"), unsafe_allow_html=True)
 with col3:
-    st.markdown(metric_block("📈 ROI on Operating Cost (Monthly)", roi_percent, suffix="%"), unsafe_allow_html=True)
+    st.markdown(metric_block("📈 ROI on Operating Cost (Monthly)", suffix="%", roi_percent), unsafe_allow_html=True)
 with col4:
     st.markdown(metric_block("📈 ROI on Operating Cost (Annual)", annual_roi_percent, suffix="%"), unsafe_allow_html=True)
 
@@ -148,11 +148,11 @@ st.markdown("### 🧩 Indirect Impact from AI (Performance Uplift)" )
 st.markdown(caption("These gains reflect enhanced output from improved efficiency and revenue uplift..."), unsafe_allow_html=True)
 col1, col2, col3 = st.columns(3)
 with col1:
-    st.markdown(metric_block("🧠 Production Dollar Savings", production_dollar_savings, suffix="$"), unsafe_allow_html=True)
+    st.markdown(metric_block("🧠 Production Dollar Savings", suffix="$", production_dollar_savings), unsafe_allow_html=True)
 with col2:
-    st.markdown(metric_block("🛒 Upsell Dollar Savings", upsell_dollar_savings, color="#1f77b4", border="#1f77b4", suffix="$"), unsafe_allow_html=True)
+    st.markdown(metric_block("🛒 Upsell Dollar Savings", suffix="$", upsell_dollar_savings, color="#1f77b4", border="#1f77b4"), unsafe_allow_html=True)
 with col3:
-    st.markdown(metric_block("🎯 Total Monthly Value", net_savings + indirect_savings, color="#FFD700", border="#FFD700", suffix="$"), unsafe_allow_html=True)
+    st.markdown(metric_block("🎯 Total Monthly Value", suffix="$", net_savings + indirect_savings, color="#FFD700", border="#FFD700"), unsafe_allow_html=True)
 
 # AI Investment Impact
 st.markdown("### 💡 AI Investment Impact")
