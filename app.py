@@ -15,7 +15,7 @@ def metric_block(label, value, color="#00FFAA", border="#00FFAA", suffix=""):
         margin-bottom: 25px;
     '>
         <div style='color: white; font-size: 16px; margin-bottom: 5px;'>{label}</div>
-        <div style='color: {color}; font-size: 36px; font-weight: bold;'>{value:,.0f}%</div>
+        <div style='color: {color}; font-size: 36px; font-weight: bold;'>{value:,.1f} {suffix}</div>
     </div>
     """
 
