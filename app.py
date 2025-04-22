@@ -132,7 +132,7 @@ col1, col2, col3, col4 = st.columns(4)
 with col1:
     st.markdown(metric_block("💰 Net Monthly Savings", net_savings), unsafe_allow_html=True)
 with col2:
-    st.markdown(metric_block("📅 Break-even Period", f"{payback_days:.1f} days"), unsafe_allow_html=True)
+    st.markdown(metric_block("🧾 Break-even Period", payback_days, suffix=" days"), unsafe_allow_html=True)
 st.markdown("<div style='margin-top: -30px; font-size: 16px; color: white;'>days</div>", unsafe_allow_html=True)
 with col3:
     st.markdown(metric_block("📈 ROI on Operating Cost (Monthly)", roi_percent, suffix="%"), unsafe_allow_html=True)
