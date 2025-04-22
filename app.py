@@ -173,8 +173,8 @@ with col1:
 with col2:
     pay_fig = go.Figure(go.Indicator(
         mode="gauge+number",
-        value=some_value,
-        title={'text': "Some Title"},
+        value=investment_payback_months,
+        title={'text': "Payback Period (Months)"},
         gauge={
             'axis': {'range': [0, 30]},
             'bar': {'color': "black"},
