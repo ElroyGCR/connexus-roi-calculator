@@ -23,7 +23,7 @@ st.set_page_config(page_title="ConnexUS AI ROI Calculator", layout="wide")
 
 # --- SIDEBAR INPUTS ---
 st.sidebar.image(logo, use_container_width=True)
-st.sidebar.header("📊 Input Your Call Center Data")
+st.sidebar.header("📊 Input Your Business Data")
 
 # Revenue & Volume
 st.sidebar.subheader("📈 Revenue & Volume")
