@@ -15,7 +15,7 @@ def metric_block(label, value, color="#00FFAA", border="#00FFAA", suffix=""):
         margin-bottom: 25px;
     '>
         <div style='color: white; font-size: 16px; margin-bottom: 5px;'>{label}</div>
-        <div style='color: {color}; font-size: 36px; font-weight: bold;'>{suffix}{value:,.0f}</div>
+        <div style='color: {color}; font-size: 36px; font-weight: bold;'>{value:,.0f}%</div>
     </div>
     """
 
@@ -132,7 +132,7 @@ col1, col2, col3, col4 = st.columns(4)
 with col1:
     st.markdown(metric_block("💰 Net Monthly Savings", net_savings), unsafe_allow_html=True)
 with col2:
-    st.markdown(metric_block("📅 Break-even Period", payback_days, suffix=""), unsafe_allow_html=True)
+    st.markdown(metric_block("📅 Break-even Period", f"{payback_days:.1f} days"), unsafe_allow_html=True)
 st.markdown("<div style='margin-top: -30px; font-size: 16px; color: white;'>days</div>", unsafe_allow_html=True)
 with col3:
     st.markdown(metric_block("📈 ROI on Operating Cost (Monthly)", roi_percent, suffix="%"), unsafe_allow_html=True)
@@ -169,8 +169,8 @@ st.markdown(
         color: white;
         text-align: center;
     '>
-        For every <span style='color:#FFD700; font-size: 32px; font-weight:800;'>$1</span> you invest in AI, you save:
-        <span style='color:#00FFAA; font-size: 36px; font-weight:900;'>${dollar_saved_per_ai_dollar:,.2f}</span>
+        For every <span style='color:#FFD700; font-size: 40px; font-weight:800;'>$1</span> you invest in AI, you save:
+        <span style='color:#00FFAA; font-size: 44px; font-weight:900;'>${dollar_saved_per_ai_dollar:,.2f}</span>
     </div>
     """,
     unsafe_allow_html=True
