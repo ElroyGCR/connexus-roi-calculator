@@ -123,7 +123,8 @@ annual_roi_percent   = roi_percent * 12
 payback_days         = (integration / value_basis) * 30 if value_basis > 0 else float('inf')
 
 # --- 8. ROI vs Investment (Integration) ---
-annual_net_savings    = total_monthly_value * 12investment_roi       = ((annual_net_savings - integration) / integration) * 100 if integration > 0 else 0
+annual_net_savings    = total_monthly_value * 12
+investment_roi       = ((annual_net_savings - integration) / integration) * 100 if integration > 0 else 0
 investment_payback_months = (integration / annual_net_savings) * 12 if annual_net_savings > 0 else float('inf')
 
 dollar_saved_per_ai_dollar = (value_basis / total_ai_monthly_cost) if total_ai_monthly_cost > 0 else 0
