@@ -1,6 +1,17 @@
 import streamlit as st
 st.set_page_config(page_title="ConnexUS AI ROI Calculator", layout="wide")
 
+st.markdown(
+    """
+    <style>
+    .block-container {
+        padding-top: 1rem !important;  /* Tighten top spacing */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 import pandas as pd
 import plotly.graph_objects as go
 from PIL import Image
@@ -13,19 +24,25 @@ with open("connexus_logo_watermark.png", "rb") as f:
 st.markdown(
     f"""
     <style>
+    /* Place watermark inside the main content pane */
+    [data-testid="stAppViewContainer"] > .main {{
+        position: relative;
+    }}
+
     .watermark {{
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100vh;
-        width: 100vw;
-        z-index: 0;
-        pointer-events: none;
+        position: absolute;
+        top: 100px;  /* Moves watermark higher */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 800px;  /* Larger size */
+        height: auto;
+        opacity: 0.035;
         background-image: url("{logo_url}");
         background-repeat: no-repeat;
-        background-position: center 250px;
-        background-size: 1000px;
-        opacity: 0.3;
+        background-size: contain;
+        background-position: center;
+        z-index: 0;
+        pointer-events: none;
     }}
     </style>
     <div class="watermark"></div>
