@@ -292,7 +292,7 @@ donut_fig.update_layout(
     plot_bgcolor='rgba(0,0,0,0)',
     font=dict(size=16),  # ← overall font size
     legend=dict(
-        font=dict(size=16),  # ← legend font size specifically
+        font=dict(size=22),  # ← legend font size specifically
         orientation="v",     # optional: vertical layout
         y=0.5,               # optional: adjust vertical positioning
         x=1.05               # optional: move it slightly to the right if overlapping
