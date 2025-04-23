@@ -24,17 +24,22 @@ with open("connexus_logo_watermark.png", "rb") as f:
 st.markdown(
     f"""
     <style>
-    [data-testid="stAppViewContainer"] > .main {{
+    .watermark {{
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 100vw;
+        z-index: 0;
+        pointer-events: none;
         background-image: url("{logo_url}");
         background-repeat: no-repeat;
-        background-position: center 200px;  /* adjust as needed */
+        background-position: center 250px;
         background-size: 700px;
-        background-attachment: fixed;
         opacity: 0.03;
-        pointer-events: none;
-        z-index: 0;
     }}
     </style>
+    <div class="watermark"></div>
     """,
     unsafe_allow_html=True
 )
