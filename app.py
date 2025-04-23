@@ -19,10 +19,10 @@ st.markdown(
     [data-testid="stAppViewContainer"] > .main {{
         background-image: url("{logo_url}");
         background-repeat: no-repeat;
-        background-position: center 200px;
-        background-size: contain;
+        background-position: center center;
+        background-size: 800px;
         background-attachment: fixed;
-        opacity: 0.2;
+        opacity: 0.12;
         z-index: -1;
     }}
     </style>
