@@ -278,9 +278,6 @@ donut_fig = go.Figure(data=[go.Pie(labels=["AI Usage","Residual Labor","Subscrip
 donut_fig.update_layout(plot_bgcolor='rgba(0,0,0,0)', title='AI-Enabled Monthly Cost Breakdown')
 st.plotly_chart(donut_fig, use_container_width=True)
 
-# Monthly Cost Efficiency\st.markdown("### 💸 Monthly Cost Efficiency")
-st.markdown(f"<div style='color:#00FFAA; font-size:36px; font-weight:bold;'>{(net_savings/baseline_human_cost*100):.2f}%</div>", unsafe_allow_html=True)
-
 st.markdown("### 💸 Monthly Cost Efficiency")
 st.markdown(
     """
@@ -290,6 +287,8 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+# Monthly Cost Efficiency\st.markdown("### 💸 Monthly Cost Efficiency")
+st.markdown(f"<div style='color:#00FFAA; font-size:36px; font-weight:bold;'>{(net_savings/baseline_human_cost*100):.2f}%</div>", unsafe_allow_html=True)
 
 # ✅ Step 1: Add HR-impact section placeholder at the bottom
 # --- HR Efficiency & Operational Impact ---
