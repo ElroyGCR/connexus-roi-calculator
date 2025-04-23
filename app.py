@@ -24,7 +24,7 @@ st.markdown(
         background-image: url("{logo_url}");
         background-repeat: no-repeat;
         background-position: center 250px;
-        background-size: 700px;
+        background-size: 1000px;
         opacity: 0.3;
     }}
     </style>
