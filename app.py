@@ -1,33 +1,38 @@
-import os
 import streamlit as st
 from PIL import Image
 import pandas as pd
 import plotly.graph_objects as go
 import base64
+import os
+
+# ✅ Set page config IMMEDIATELY
+st.set_page_config(page_title="ConnexUS AI ROI Calculator", layout="wide")
+
+# Optional: Test watermark exists (debug only)
+# st.write("Watermark exists:", os.path.exists("connexus_logo_watermark.png"))
 
 # Load and encode watermark image
 with open("connexus_logo_watermark.png", "rb") as f:
     data_uri = base64.b64encode(f.read()).decode("utf-8")
     logo_url = f"data:image/png;base64,{data_uri}"
 
-# ✅ Debug print to verify file exists
-st.write("Watermark exists:", os.path.exists("connexus_logo_watermark.png"))
-    
-# --- Helper functions for styled metrics and captions ---
-def metric_block(label, value, color="#00FFAA", border="#00FFAA", prefix="", suffix=""):
-    return f"""
-    <div style='
-        background-color: #111;
-        border: 2px solid {border};
-        border-radius: 12px;
-        padding: 15px;
-        width: fit-content;
-        margin-bottom: 25px;
-    '>
-        <div style='color: white; font-size: 16px; margin-bottom: 5px;'>{label}</div>
-        <div style='color: {color}; font-size: 36px; font-weight: bold;'>{prefix}{value:,.1f}{suffix}</div>
-    </div>
-    """
+# Inject sticky watermark
+st.markdown(
+    f"""
+    <style>
+    [data-testid="stAppViewContainer"] > .main {{
+        background-image: url("{logo_url}");
+        background-repeat: no-repeat;
+        background-position: center 200px;
+        background-size: 700px;
+        background-attachment: fixed;
+        opacity: 0.04;
+        z-index: -1;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 def caption(text):
     return f"<div style='color: white; font-size: 15px; margin-bottom: 10px;'>{text}</div>"
