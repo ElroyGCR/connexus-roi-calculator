@@ -16,16 +16,16 @@ st.markdown(
     [data-testid="stAppViewContainer"] > .main {{
         background-image: url("{logo_url}");
         background-repeat: no-repeat;
-        background-position: center 400px;
-        background-size: 600px;
+        background-position: center 300px;  /* adjust if needed */
+        background-size: 650px;
         background-attachment: fixed;
+        opacity: 0.035;  /* subtle, clean */
+        z-index: -1;
     }}
     </style>
     """,
     unsafe_allow_html=True
 )
-
-st.image("connexus_logo_watermark.png", caption="Watermark visibility test", use_container_width=True)
 
 def metric_block(label, value, color="#00FFAA", border="#00FFAA", prefix="", suffix=""):
     return f"""
