@@ -201,11 +201,13 @@ st.markdown(
 col1, col2 = st.columns(2)
 with col1:
     inv_fig = go.Figure(go.Indicator(
-        mode="gauge+number+delta",
-        value=investment_roi,
-        delta={'reference': 100},
-        gauge={'axis':{'range':[0,200]}},
-        title={'text':'Investment ROI (%)'}))
+    mode="gauge+number+delta",
+    value=investment_roi,
+    delta={'reference': 100},
+    number={'font': {'size': 40, 'color': "white"}},  # 👈 this matches Payback font
+    gauge={'axis': {'range': [0, 200]}},
+    title={'text': 'Investment ROI (%)', 'font': {'color': 'white'}}
+))
     st.plotly_chart(inv_fig, use_container_width=True)
 with col2:
     pay_fig = go.Figure(go.Indicator(
