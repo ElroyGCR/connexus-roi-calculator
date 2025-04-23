@@ -226,6 +226,17 @@ with col2:
     st.plotly_chart(pay_fig, use_container_width=True)
 
 # Cost Comparison Waterfall
+st.markdown(
+    """
+    <div style='color: white; font-size: 15px; margin-top: -10px; margin-bottom: 20px;'>
+        This chart breaks down your full monthly cost transition from a 100% human-run operation 
+        to a partially automated AI-powered one. 
+        <br>It visualizes how labor is reduced, AI costs are added, and what the final AI-enabled 
+        operating cost looks like — so you can clearly see the shift in monthly spending.
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 st.markdown("### 💧 Monthly Cost Breakdown (Waterfall)")
 waterfall_fig = go.Figure(go.Waterfall(
     measure=["absolute","relative","relative","relative","absolute"],
@@ -237,6 +248,16 @@ waterfall_fig.update_layout(plot_bgcolor='rgba(0,0,0,0)', yaxis_title='Monthly C
 st.plotly_chart(waterfall_fig, use_container_width=True)
 
 # Line Chart: Savings vs Integration Cost
+st.markdown(
+    """
+    <div style='color: white; font-size: 15px; margin-top: -10px; margin-bottom: 20px;'>
+        This chart compares cumulative monthly savings against your initial integration cost.
+        <br>The green line shows how your savings grow over time, while the dashed red line represents 
+        the one-time setup investment — giving you a clear visual of when ROI is achieved.
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 df = pd.DataFrame({
     'Month': list(range(1,13)),
     'Cumulative Savings': [net_savings*m for m in range(1,13)],
