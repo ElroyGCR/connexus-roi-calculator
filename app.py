@@ -36,9 +36,6 @@ def caption(text):
 # Load logo
 logo = Image.open("connexus_logo.png")
 
-# App configuration
-st.set_page_config(page_title="ConnexUS AI ROI Calculator", layout="wide")
-
 # Add sticky background watermark (centered, behind all content)
 st.markdown(
     f"""
