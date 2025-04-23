@@ -2,7 +2,13 @@ import streamlit as st
 from PIL import Image
 import pandas as pd
 import plotly.graph_objects as go
+import base64
 
+# Load and encode watermark image as base64
+with open("connexus_logo_watermark.png", "rb") as f:
+    data_uri = base64.b64encode(f.read()).decode("utf-8")
+    logo_url = f"data:image/png;base64,{data_uri}"
+    
 # --- Helper functions for styled metrics and captions ---
 def metric_block(label, value, color="#00FFAA", border="#00FFAA", prefix="", suffix=""):
     return f"""
@@ -27,6 +33,24 @@ logo = Image.open("connexus_logo.png")
 
 # App configuration
 st.set_page_config(page_title="ConnexUS AI ROI Calculator", layout="wide")
+
+# Add sticky background watermark (centered, behind all content)
+st.markdown(
+    f"""
+    <style>
+    [data-testid="stAppViewContainer"] > .main {{
+        background-image: url("{logo_url}");
+        background-repeat: no-repeat;
+        background-position: center 180px;
+        background-size: 700px;
+        background-attachment: fixed;
+        opacity: 0.05;
+        z-index: -1;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # --- SIDEBAR INPUTS ---
 st.sidebar.image(logo, use_container_width=True)
