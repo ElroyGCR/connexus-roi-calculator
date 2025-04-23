@@ -138,7 +138,7 @@ dollar_saved_per_ai_dollar = (value_basis / total_ai_monthly_cost) if total_ai_m
 
 # --- 9. Build the Streamlit UI ---
 # Core Financial Metrics
-st.markdown("### 📊 Core Financial Metrics (Operating Basis)")
+st.markdown("## 📊 Core Financial Metrics (Operating Basis)")
 st.markdown(caption("These values reflect cost savings compared to your human-only baseline."), unsafe_allow_html=True)
 col1, col2, col3, col4 = st.columns(4)
 with col1:
@@ -151,7 +151,7 @@ with col4:
     st.markdown(metric_block("📈 ROI on Operating Cost (Annual)", annual_roi_percent, suffix="%"), unsafe_allow_html=True)
 
 # Indirect Impact
-st.markdown("### 🧩 Indirect Impact from AI (Performance Uplift)" )
+st.markdown("## 🧩 Indirect Impact from AI (Performance Uplift)" )
 st.markdown(caption("These gains reflect enhanced output from improved efficiency and revenue uplift..."), unsafe_allow_html=True)
 col1, col2, col3 = st.columns(3)
 with col1:
@@ -162,7 +162,7 @@ with col3:
     st.markdown(metric_block("🎯 Total Monthly Value", net_savings + indirect_savings, color="#FFD700", border="#FFD700", prefix="$"), unsafe_allow_html=True)
 
 # AI Investment Impact
-st.markdown("### 💡 AI Investment Impact")
+st.markdown("## 💡 AI Investment Impact")
 st.markdown(caption("Shows how much value is returned for every dollar spent on AI — includes cost savings and indirect gains."), unsafe_allow_html=True)
 
 st.markdown(
@@ -187,7 +187,7 @@ st.markdown(
 )
 
 # ROI & Break-even (Investment)
-st.markdown("### 💼 ROI & Break-even Based on Investment")
+st.markdown("## 💼 ROI & Break-even Based on Investment")
 st.markdown(
     """
     <div style='color: white; font-size: 15px; margin-top: -10px; margin-bottom: 20px;'>
@@ -226,7 +226,7 @@ with col2:
     st.plotly_chart(pay_fig, use_container_width=True)
 
 # Cost Comparison Waterfall
-st.markdown("### 💧 Monthly Cost Breakdown (Waterfall)")
+st.markdown("## 💧 Monthly Cost Breakdown")
 st.markdown(
     """
     <div style='color: white; font-size: 15px; margin-top: -10px; margin-bottom: 20px;'>
@@ -272,7 +272,7 @@ st.plotly_chart(line_fig, use_container_width=True)
 
 # Donut Chart: AI Cost Composition
 # --- DONUT CHART ---
-st.markdown("## 🍩 AI Cost Composition (Donut Chart)")
+st.markdown("## 🍩 AI Cost Composition")
 donut_fig = go.Figure(data=[go.Pie(labels=["AI Usage","Residual Labor","Subscription"],
                                     values=[ai_cost, residual_cost, subscription], hole=.5, textinfo='label+percent+value')])
 donut_fig.update_layout(plot_bgcolor='rgba(0,0,0,0)', title='AI-Enabled Monthly Cost Breakdown')
@@ -353,7 +353,7 @@ with col3:
     st.markdown(metric_block("📈 Seasonal Staffing Savings", seasonal_savings, color="#17becf", border="#17becf"), unsafe_allow_html=True)
 
 # --- Total Strategic HR Impact
-st.markdown("### 💼 Total Strategic HR Efficiency Impact")
+st.markdown("## 💼 Total Strategic HR Efficiency Impact")
 st.markdown(metric_block("⭐ Combined HR Efficiency Gains", strategic_total, color="#FFD700", border="#FFD700", suffix="$"), unsafe_allow_html=True)
 
 # --- HR Strategic Donut Chart ---
