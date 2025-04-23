@@ -20,9 +20,9 @@ st.markdown(
         background-image: url("{logo_url}");
         background-repeat: no-repeat;
         background-position: center 200px;
-        background-size: 700px;
+        background-size: contain;
         background-attachment: fixed;
-        opacity: 0.05;
+        opacity: 0.2;
         z-index: -1;
     }}
     </style>
