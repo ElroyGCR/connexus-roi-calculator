@@ -27,6 +27,8 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+st.markdown("<div style='color: gray; text-align: center;'>✅ Watermark should now be visible behind this app.</div>", unsafe_allow_html=True)
+
 def metric_block(label, value, color="#00FFAA", border="#00FFAA", prefix="", suffix=""):
     return f"""
     <div style='
