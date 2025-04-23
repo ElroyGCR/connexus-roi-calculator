@@ -13,15 +13,20 @@ with open("connexus_logo_watermark.png", "rb") as f:
 st.markdown(
     f"""
     <style>
-    [data-testid="stAppViewContainer"] > .main {{
+    section.main > div {{
         background-image: url("{logo_url}");
         background-repeat: no-repeat;
         background-position: center 300px;
-        background-size: 650px;
-        background-attachment: fixed;
-        opacity: 0.04;
-        position: relative;
+        background-size: 750px;
+        background-attachment: scroll;
+        opacity: 0.035;
         z-index: 0;
+        position: fixed;
+        height: 100vh;
+        width: 100vw;
+        top: 0;
+        left: 0;
+        pointer-events: none;
     }}
     </style>
     """,
