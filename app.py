@@ -411,7 +411,7 @@ hr_donut = go.Figure(data=[go.Pie(
     labels=["Recruiting Savings", "Absenteeism Savings", "Seasonal Staffing Savings"],
     values=[recruiting_savings, absentee_cost, seasonal_savings],
     hole=0.5,
-    textinfo="label+percent+value",
+    texttemplate='%{label}<br>$%{value:,.0f}<br>%{percent}',  # 👈 Format with $ and no decimals
     textfont=dict(size=18),
     marker=dict(colors=["#e377c2", "#bcbd22", "#17becf"])
 )])
@@ -423,6 +423,6 @@ hr_donut.update_layout(
     plot_bgcolor="rgba(0,0,0,0)",
     font=dict(size=16),
     legend=dict(font=dict(size=22)),
-    margin=dict(t=40, b=40, l=60, r=60)
+    margin=dict(t=80, b=40, l=60, r=60)  # 👈 bump top to 80
 )
 st.plotly_chart(hr_donut, use_container_width=True)
