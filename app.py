@@ -1,5 +1,8 @@
+import streamlit as st
+
 st.set_page_config(page_title="ConnexUS AI ROI Calculator", layout="wide")
 
+# Then all other imports
 from PIL import Image
 import pandas as pd
 import plotly.graph_objects as go
