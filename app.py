@@ -27,7 +27,7 @@ st.markdown(
     .watermark {{
         position: fixed;
         top: 80px;  /* raise it higher */
-        left: calc(520px + 30%);  /* shift left, closer to center */
+        left: calc(540px + 30%);  /* shift left, closer to center */
         transform: translateX(-50%);
         height: 800px;
         width: 850px;
@@ -37,7 +37,7 @@ st.markdown(
         background-repeat: no-repeat;
         background-position: center center;
         background-size: contain;
-        opacity: 0.1;
+        opacity: 0.15;
     }}
     </style>
     <div class="watermark"></div>
