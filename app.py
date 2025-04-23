@@ -226,6 +226,7 @@ with col2:
     st.plotly_chart(pay_fig, use_container_width=True)
 
 # Cost Comparison Waterfall
+st.markdown("### 💧 Monthly Cost Breakdown (Waterfall)")
 st.markdown(
     """
     <div style='color: white; font-size: 15px; margin-top: -10px; margin-bottom: 20px;'>
@@ -237,7 +238,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-st.markdown("### 💧 Monthly Cost Breakdown (Waterfall)")
 waterfall_fig = go.Figure(go.Waterfall(
     measure=["absolute","relative","relative","relative","absolute"],
     x=["100% Human Cost","- Reduced Labor","+ AI Usage","+ Subscription","Net AI-Enabled Cost"],
@@ -248,6 +248,7 @@ waterfall_fig.update_layout(plot_bgcolor='rgba(0,0,0,0)', yaxis_title='Monthly C
 st.plotly_chart(waterfall_fig, use_container_width=True)
 
 # Line Chart: Savings vs Integration Cost
+st.markdown("## 📈 Savings vs Integration Cost Over Time")
 st.markdown(
     """
     <div style='color: white; font-size: 15px; margin-top: -10px; margin-bottom: 20px;'>
