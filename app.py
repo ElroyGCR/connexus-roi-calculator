@@ -26,17 +26,18 @@ st.markdown(
     <style>
     .watermark {{
         position: fixed;
-        top: 0;
-        left: 0;
-        height: 100vh;
-        width: 100vw;
+        top: 120px;  /* move up/down */
+        left: calc(330px + 50%);  /* offset to center inside right pane */
+        transform: translateX(-50%);
+        height: 600px;
+        width: 700px;
         z-index: 0;
         pointer-events: none;
         background-image: url("{logo_url}");
         background-repeat: no-repeat;
-        background-position: center 250px;
-        background-size: 1200px;
-        opacity: 0.03;
+        background-position: center center;
+        background-size: contain;
+        opacity: 0.1;
     }}
     </style>
     <div class="watermark"></div>
