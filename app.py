@@ -271,6 +271,8 @@ line_fig.update_layout(plot_bgcolor='rgba(0,0,0,0)', xaxis_title='Month', yaxis_
 st.plotly_chart(line_fig, use_container_width=True)
 
 # Donut Chart: AI Cost Composition
+# --- DONUT CHART ---
+st.markdown("## 🍩 AI Cost Composition (Donut Chart)")
 donut_fig = go.Figure(data=[go.Pie(labels=["AI Usage","Residual Labor","Subscription"],
                                     values=[ai_cost, residual_cost, subscription], hole=.5, textinfo='label+percent+value')])
 donut_fig.update_layout(plot_bgcolor='rgba(0,0,0,0)', title='AI-Enabled Monthly Cost Breakdown')
@@ -278,6 +280,16 @@ st.plotly_chart(donut_fig, use_container_width=True)
 
 # Monthly Cost Efficiency\st.markdown("### 💸 Monthly Cost Efficiency")
 st.markdown(f"<div style='color:#00FFAA; font-size:36px; font-weight:bold;'>{(net_savings/baseline_human_cost*100):.2f}%</div>", unsafe_allow_html=True)
+
+st.markdown("### 💸 Monthly Cost Efficiency")
+st.markdown(
+    """
+    <div style='color: white; font-size: 15px; margin-top: -10px; margin-bottom: 15px;'>
+        This shows how much your monthly costs drop compared to a fully human-run operation.
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # ✅ Step 1: Add HR-impact section placeholder at the bottom
 # --- HR Efficiency & Operational Impact ---
