@@ -30,6 +30,21 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+def metric_block(label, value, color="#00FFAA", border="#00FFAA", prefix="", suffix=""):
+    return f"""
+    <div style='
+        background-color: #111;
+        border: 2px solid {border};
+        border-radius: 12px;
+        padding: 15px;
+        width: fit-content;
+        margin-bottom: 25px;
+    '>
+        <div style='color: white; font-size: 16px; margin-bottom: 5px;'>{label}</div>
+        <div style='color: {color}; font-size: 36px; font-weight: bold;'>{prefix}{value:,.1f}{suffix}</div>
+    </div>
+    """
+    
 def caption(text):
     return f"<div style='color: white; font-size: 15px; margin-bottom: 10px;'>{text}</div>"
 
