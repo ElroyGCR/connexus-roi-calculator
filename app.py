@@ -292,7 +292,7 @@ donut_fig.update_layout(
     plot_bgcolor='rgba(0,0,0,0)',
     font=dict(size=16),  # ← overall font size
     legend=dict(
-        font=dict(size=22),  # ← legend font size specifically
+        font=dict(size=16),  # ← legend font size specifically
         orientation="v",     # optional: vertical layout
         y=0.5,               # optional: adjust vertical positioning
         x=1.05               # optional: move it slightly to the right if overlapping
@@ -310,7 +310,20 @@ st.markdown(
     unsafe_allow_html=True
 )
 # Monthly Cost Efficiency\st.markdown("### 💸 Monthly Cost Efficiency")
-st.markdown(f"<div style='color:#00FFAA; font-size:36px; font-weight:bold;'>{(net_savings/baseline_human_cost*100):.2f}%</div>", unsafe_allow_html=True)
+st.markdown(f"""
+    <div style='
+        background-color: #111;
+        border: 2px solid #00FFAA;
+        border-radius: 12px;
+        padding: 15px;
+        width: fit-content;
+        margin-bottom: 25px;
+    '>
+        <div style='color: #00FFAA; font-size: 36px; font-weight: bold;'>
+            {(net_savings / baseline_human_cost * 100):.2f}%
+        </div>
+    </div>
+""", unsafe_allow_html=True)
 
 # ✅ Step 1: Add HR-impact section placeholder at the bottom
 # --- HR Efficiency & Operational Impact ---
@@ -366,17 +379,17 @@ col1, col2, col3 = st.columns(3)
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.markdown(metric_block("🧾 Recruiting Savings", recruiting_savings, color="#1f77b4", border="#1f77b4"), unsafe_allow_html=True)
+    st.markdown(metric_block("🧾 Recruiting Savings", recruiting_savings, color="#1f77b4", border="#1f77b4", prefix="$"), unsafe_allow_html=True)
 
 with col2:
-    st.markdown(metric_block("🚫 Absenteeism Savings", absentee_cost, color="#bcbd22", border="#bcbd22"), unsafe_allow_html=True)
+    st.markdown(metric_block("🚫 Absenteeism Savings", absentee_cost, color="#bcbd22", border="#bcbd22", prefix="$"), unsafe_allow_html=True)
 
 with col3:
-    st.markdown(metric_block("📈 Seasonal Staffing Savings", seasonal_savings, color="#17becf", border="#17becf"), unsafe_allow_html=True)
+    st.markdown(metric_block("📈 Seasonal Staffing Savings", seasonal_savings, color="#17becf", border="#17becf", prefix="$"), unsafe_allow_html=True)
 
 # --- Total Strategic HR Impact
 st.markdown("## 💼 Total Strategic HR Efficiency Impact")
-st.markdown(metric_block("⭐ Combined HR Efficiency Gains", strategic_total, color="#FFD700", border="#FFD700", suffix="$"), unsafe_allow_html=True)
+st.markdown(metric_block("⭐ Combined HR Efficiency Gains", strategic_total, color="#FFD700", border="#FFD700", prefix="$"), unsafe_allow_html=True)
 
 # --- HR Strategic Donut Chart ---
 st.markdown("## 📊 Breakdown of HR & Seasonal Efficiency Gains")
