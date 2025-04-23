@@ -6,12 +6,10 @@ import plotly.graph_objects as go
 from PIL import Image
 import base64
 
-# ✅ Encode watermark image to base64
 with open("connexus_logo_watermark.png", "rb") as f:
     data_uri = base64.b64encode(f.read()).decode("utf-8")
     logo_url = f"data:image/png;base64,{data_uri}"
 
-# ✅ Inject watermark into background (visible but non-intrusive)
 st.markdown(
     f"""
     <style>
@@ -21,8 +19,6 @@ st.markdown(
         background-position: center 400px;
         background-size: 600px;
         background-attachment: fixed;
-        opacity: 0.035;
-        z-index: -1;
     }}
     </style>
     """,
