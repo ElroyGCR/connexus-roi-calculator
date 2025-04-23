@@ -16,18 +16,17 @@ st.markdown(
     [data-testid="stAppViewContainer"] > .main {{
         background-image: url("{logo_url}");
         background-repeat: no-repeat;
-        background-position: center 300px;  /* adjust if needed */
+        background-position: center 300px;
         background-size: 650px;
         background-attachment: fixed;
-        opacity: 0.035;  /* subtle, clean */
-        z-index: -1;
+        opacity: 0.04;
+        position: relative;
+        z-index: 0;
     }}
     </style>
     """,
     unsafe_allow_html=True
 )
-
-st.markdown("<div style='color: gray; text-align: center;'>✅ Watermark should now be visible behind this app.</div>", unsafe_allow_html=True)
 
 def metric_block(label, value, color="#00FFAA", border="#00FFAA", prefix="", suffix=""):
     return f"""
