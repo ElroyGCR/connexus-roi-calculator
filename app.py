@@ -411,12 +411,14 @@ hr_donut = go.Figure(data=[go.Pie(
     textfont=dict(size=18),
     marker=dict(colors=["#e377c2", "#bcbd22", "#17becf"])
 )])
+
 hr_donut.update_layout(
-    height=500,
+    height=550,
     showlegend=True,
     title="Strategic Operational Impact Composition",
     plot_bgcolor="rgba(0,0,0,0)",
     font=dict(size=16),
-    legend=dict(font=dict(size=14))
+    legend=dict(font=dict(size=22)),
+    margin=dict(t=40, b=40, l=60, r=60)
 )
 st.plotly_chart(hr_donut, use_container_width=True)
