@@ -25,7 +25,7 @@ st.markdown(
         background-repeat: no-repeat;
         background-position: center 250px;
         background-size: 700px;
-        opacity: 0.03;
+        opacity: 0.3;
     }}
     </style>
     <div class="watermark"></div>
