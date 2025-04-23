@@ -48,24 +48,6 @@ def caption(text):
 # Load logo
 logo = Image.open("connexus_logo.png")
 
-# Add sticky background watermark (centered, behind all content)
-st.markdown(
-    f"""
-    <style>
-    [data-testid="stAppViewContainer"] > .main {{
-        background-image: url("{logo_url}");
-        background-repeat: no-repeat;
-        background-position: center 200px;  /* adjust as needed */
-        background-size: 700px;
-        background-attachment: fixed;
-        opacity: 0.1;
-        z-index: -1;
-    }}
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 # --- SIDEBAR INPUTS ---
 st.sidebar.image(logo, use_container_width=True)
 st.sidebar.header("📊 Input Your Call Center Data")
