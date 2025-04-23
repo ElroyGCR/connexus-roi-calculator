@@ -164,7 +164,27 @@ with col3:
 # AI Investment Impact
 st.markdown("### 💡 AI Investment Impact")
 st.markdown(caption("Shows how much value is returned for every dollar spent on AI — includes cost savings and indirect gains."), unsafe_allow_html=True)
-st.markdown(f"For every <span style='color:#FFD700;'>$1</span> you invest in AI, you save: <span style='color:#00FFAA; font-size:32px;'>${dollar_saved_per_ai_dollar:,.2f}</span>", unsafe_allow_html=True)
+
+st.markdown(
+    f"""
+    <div style='
+        background-color: #111;
+        border: 2px solid #00FFAA;
+        border-radius: 12px;
+        padding: 20px 30px;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        font-size: 30px;
+        font-weight: 500;
+        color: white;
+        text-align: center;
+    '>
+        For every <span style='color:#FFD700; font-size: 46px; font-weight:800;'>$1</span> you invest in AI, you save:
+        <span style='color:#00FFAA; font-size: 50px; font-weight:900;'>${dollar_saved_per_ai_dollar:,.2f}</span>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # ROI & Break-even (Investment)
 st.markdown("### 💼 ROI & Break-even Based on Investment")
