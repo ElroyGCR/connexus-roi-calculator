@@ -7,6 +7,9 @@ import plotly.graph_objects as go
 import base64
 import os
 
+# ✅ Quick test to make sure image renders visibly
+st.image("connexus_logo_watermark.png", caption="Watermark test", use_column_width=True)
+
 # Load and encode watermark
 with open("connexus_logo_watermark.png", "rb") as f:
     data_uri = base64.b64encode(f.read()).decode("utf-8")
