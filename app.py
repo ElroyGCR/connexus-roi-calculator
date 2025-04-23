@@ -26,11 +26,11 @@ st.markdown(
     <style>
     .watermark {{
         position: fixed;
-        top: 120px;  /* move up/down */
-        left: calc(330px + 50%);  /* offset to center inside right pane */
+        top: 80px;  /* raise it higher */
+        left: calc(320px + 30%);  /* shift left, closer to center */
         transform: translateX(-50%);
-        height: 600px;
-        width: 700px;
+        height: 800px;
+        width: 850px;
         z-index: 0;
         pointer-events: none;
         background-image: url("{logo_url}");
