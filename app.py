@@ -209,20 +209,21 @@ with col1:
     st.plotly_chart(inv_fig, use_container_width=True)
 with col2:
     pay_fig = go.Figure(go.Indicator(
-        mode="gauge+number",
-        value=investment_payback_months,
-        title={'text': "Payback Period (Months)"},
-        gauge={
-            'axis': {'range': [0, 30]},
-            'bar': {'color': "black"},
-            'steps': [
-                {'range': [0, 7], 'color': "lightgreen"},
-                {'range': [7, 14], 'color': "yellow"},
-                {'range': [14, 30], 'color': "tomato"}
-            ],
-            'threshold': {'line': {'color': "red", 'width': 4}, 'value': 15}
-        }
-    ))
+    mode="gauge+number",
+    value=investment_payback_months,
+    number={'font': {'size': 40, 'color': "white"}},  # 👈 add this
+    title={'text': "Payback Period (Months)", 'font': {'color': 'white'}},
+    gauge={
+        'axis': {'range': [0, 30]},
+        'bar': {'color': "black"},
+        'steps': [
+            {'range': [0, 7], 'color': "lightgreen"},
+            {'range': [7, 14], 'color': "yellow"},
+            {'range': [14, 30], 'color': "tomato"}
+        ],
+        'threshold': {'line': {'color': "red", 'width': 4}, 'value': 15}
+    }
+))
     st.plotly_chart(pay_fig, use_container_width=True)
 
 # Cost Comparison Waterfall
