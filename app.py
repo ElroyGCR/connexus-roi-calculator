@@ -25,6 +25,8 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+st.image("connexus_logo_watermark.png", caption="Watermark visibility test", use_container_width=True)
+
 def metric_block(label, value, color="#00FFAA", border="#00FFAA", prefix="", suffix=""):
     return f"""
     <div style='
