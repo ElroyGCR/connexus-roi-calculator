@@ -270,15 +270,30 @@ line_fig.add_trace(go.Scatter(x=df['Month'], y=df['Integration Cost'], mode='lin
 line_fig.update_layout(plot_bgcolor='rgba(0,0,0,0)', xaxis_title='Month', yaxis_title='Cumulative Savings ($)')
 st.plotly_chart(line_fig, use_container_width=True)
 
-# Donut Chart: AI Cost Composition
-# --- DONUT CHART ---
-st.markdown("## 🍩 AI Cost Composition")
+st.markdown("### 🍩 AI Cost Composition")
+st.markdown(
+    """
+    <div style='color: white; font-size: 15px; margin-top: -10px; margin-bottom: 20px;'>
+        This chart visualizes the composition of your AI-enabled monthly operating cost.
+        <br>It breaks down how much is spent on AI usage, remaining labor, and platform subscription —
+        helping you see where your new cost structure lies.
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 donut_fig = go.Figure(data=[go.Pie(labels=["AI Usage","Residual Labor","Subscription"],
-                                    values=[ai_cost, residual_cost, subscription], hole=.5, textinfo='label+percent+value')])
-donut_fig.update_layout(plot_bgcolor='rgba(0,0,0,0)', title='AI-Enabled Monthly Cost Breakdown')
+                                    values=[ai_cost, residual_cost, subscription],
+                                    hole=.5, textinfo='label+percent+value')])
+donut_fig.update_layout(
+    height=500,
+    showlegend=True,
+    title='AI-Enabled Monthly Cost Breakdown',
+    plot_bgcolor='rgba(0,0,0,0)'
+)
 st.plotly_chart(donut_fig, use_container_width=True)
 
-st.markdown("### 💸 Monthly Cost Efficiency")
+st.markdown("## 💸 Monthly Cost Efficiency")
 st.markdown(
     """
     <div style='color: white; font-size: 15px; margin-top: -10px; margin-bottom: 15px;'>
