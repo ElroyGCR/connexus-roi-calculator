@@ -188,6 +188,16 @@ st.markdown(
 
 # ROI & Break-even (Investment)
 st.markdown("### 💼 ROI & Break-even Based on Investment")
+st.markdown(
+    """
+    <div style='color: white; font-size: 15px; margin-top: -10px; margin-bottom: 20px;'>
+        This section measures ROI compared to your up‑front investment (integration cost).<br>
+        <strong>Investment ROI (%)</strong> calculates your return over the course of a year.<br>
+        <strong>Payback Period (Months)</strong> estimates how many months it takes to recoup initial setup costs.
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 col1, col2 = st.columns(2)
 with col1:
     inv_fig = go.Figure(go.Indicator(
