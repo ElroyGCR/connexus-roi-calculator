@@ -270,7 +270,8 @@ line_fig.add_trace(go.Scatter(x=df['Month'], y=df['Integration Cost'], mode='lin
 line_fig.update_layout(plot_bgcolor='rgba(0,0,0,0)', xaxis_title='Month', yaxis_title='Cumulative Savings ($)')
 st.plotly_chart(line_fig, use_container_width=True)
 
-st.markdown("### 🍩 AI Cost Composition")
+# Donut Chart: AI Cost Composition
+st.markdown("## 🍩 AI Cost Composition")
 st.markdown(
     """
     <div style='color: white; font-size: 15px; margin-top: -10px; margin-bottom: 20px;'>
@@ -282,22 +283,25 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-donut_fig = go.Figure(data=[go.Pie(labels=["AI Usage","Residual Labor","Subscription"],
-                                    values=[ai_cost, residual_cost, subscription],
-                                    hole=.5, textinfo='label+percent+value')])
+donut_fig = go.Figure(data=[go.Pie(
+    labels=["AI Usage", "Residual Labor", "Subscription"],
+    values=[ai_cost, residual_cost, subscription],
+    hole=0.5,
+    textinfo="label+percent+value",
+    textfont=dict(size=18),  # Match HR donut
+    marker=dict(colors=["#1f77b4", "#aec7e8", "#ff9896"])  # Optional: set consistent colors
+)])
+
 donut_fig.update_layout(
-    height=500,
+    height=550,
     showlegend=True,
-    title='AI-Enabled Monthly Cost Breakdown',
-    plot_bgcolor='rgba(0,0,0,0)',
-    font=dict(size=16),  # ← overall font size
-    legend=dict(
-        font=dict(size=16),  # ← legend font size specifically
-        orientation="v",     # optional: vertical layout
-        y=0.5,               # optional: adjust vertical positioning
-        x=1.05               # optional: move it slightly to the right if overlapping
-    )
+    title="AI-Enabled Monthly Cost Breakdown",
+    plot_bgcolor="rgba(0,0,0,0)",
+    font=dict(size=16),
+    legend=dict(font=dict(size=22)),  # Match other donut
+    margin=dict(t=40, b=40, l=60, r=60)
 )
+
 st.plotly_chart(donut_fig, use_container_width=True)
 
 st.markdown("## 💸 Monthly Cost Efficiency")
