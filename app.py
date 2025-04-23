@@ -27,7 +27,7 @@ st.markdown(
     .watermark {{
         position: fixed;
         top: 80px;  /* raise it higher */
-        left: calc(320px + 30%);  /* shift left, closer to center */
+        left: calc(420px + 30%);  /* shift left, closer to center */
         transform: translateX(-50%);
         height: 800px;
         width: 850px;
