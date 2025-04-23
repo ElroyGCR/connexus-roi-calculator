@@ -1,20 +1,18 @@
-# MUST be first
-import streamlit as st
-st.set_page_config(page_title="ConnexUS AI ROI Calculator", layout="wide")
+import streamlit as st  # MUST be very first
+st.set_page_config(page_title="ConnexUS AI ROI Calculator", layout="wide")  # IMMEDIATELY after
 
-# Then import other packages
 from PIL import Image
 import pandas as pd
 import plotly.graph_objects as go
 import base64
 import os
 
-# Load and encode watermark (after set_page_config)
+# Load and encode watermark
 with open("connexus_logo_watermark.png", "rb") as f:
     data_uri = base64.b64encode(f.read()).decode("utf-8")
     logo_url = f"data:image/png;base64,{data_uri}"
 
-# Apply watermark
+# Inject watermark CSS
 st.markdown(
     f"""
     <style>
