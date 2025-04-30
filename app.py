@@ -158,7 +158,6 @@ ai_cost_per_min  = st.sidebar.number_input("AI Cost per Minute ($)", value=0.18,
 # ROI Calculation Toggles
 st.sidebar.markdown("---")
 use_indirects    = st.sidebar.checkbox("Include Indirect Value in ROI Calculation", value=True)
-use_hr_impact    = st.sidebar.checkbox("Include Strategic HR Savings in ROI", value=False)
 
 # --- MAIN LAYOUT ---
 st.markdown("<hr style='margin-top: -1rem; margin-bottom: 1rem;'>", unsafe_allow_html=True)
@@ -477,56 +476,6 @@ if use_hr_impact:
     value_basis += strategic_total
 else:
     strategic_total = 0
-
-# --- Display 3 Metrics in Boxes ---
-col1, col2, col3 = st.columns(3)
-
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    st.markdown(metric_block("🧾 Recruiting Savings", recruiting_savings, color="#1f77b4", border="#1f77b4", prefix="$"), unsafe_allow_html=True)
-
-with col2:
-    st.markdown(metric_block("🚫 Absenteeism Savings", absentee_cost, color="#bcbd22", border="#bcbd22", prefix="$"), unsafe_allow_html=True)
-
-with col3:
-    st.markdown(metric_block("📈 Seasonal Staffing Savings", seasonal_savings, color="#17becf", border="#17becf", prefix="$"), unsafe_allow_html=True)
-
-# --- Total Strategic HR Impact
-st.markdown("## 💼 Total Strategic HR Efficiency Impact")
-st.markdown(metric_block("⭐ Combined HR Efficiency Gains", strategic_total, color="#FFD700", border="#FFD700", prefix="$"), unsafe_allow_html=True)
-
-# --- HR Strategic Donut Chart ---
-st.markdown("## 📊 Breakdown of HR & Seasonal Efficiency Gains")
-st.markdown(
-    """
-    <div style='color: white; font-size: 15px; margin-top: -10px; margin-bottom: 20px;'>
-        This donut chart shows how your total HR efficiency impact is split across recruiting cost avoidance,
-        absenteeism reductions, and seasonal staffing efficiency.
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
-hr_donut = go.Figure(data=[go.Pie(
-    labels=["Recruiting Savings", "Absenteeism Savings", "Seasonal Staffing Savings"],
-    values=[recruiting_savings, absentee_cost, seasonal_savings],
-    hole=0.5,
-    texttemplate='%{label}<br>$%{value:,.0f}<br>%{percent}',  # 👈 Format with $ and no decimals
-    textfont=dict(size=18),
-    marker=dict(colors=["#e377c2", "#bcbd22", "#17becf"])
-)])
-
-hr_donut.update_layout(
-    height=550,
-    showlegend=True,
-    title="Strategic Operational Impact Composition",
-    plot_bgcolor="rgba(0,0,0,0)",
-    font=dict(size=16),
-    legend=dict(font=dict(size=22)),
-    margin=dict(t=80, b=40, l=60, r=60)  # 👈 bump top to 80
-)
-st.plotly_chart(hr_donut, use_container_width=True)
 
 # Make background of Plotly graphs transparent
 # This needs to be added wherever you define a chart layout, for example:
